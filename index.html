@@ -4,37 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chinmayi R M — The Digital Guild</title>
-  <meta name="description" content="Scroll to walk the museum — enter each room through the painting." />
+  <meta name="description" content="Scroll the museum — Seedance walkthrough scrubbed to your scroll." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+JP:wght@300;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Noto+Serif+JP:wght@300;500&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #050505;
       --silk: #f3efe6;
       --muted: rgba(243, 239, 230, 0.72);
-      --gold: #d4af37;
-      --line: rgba(255, 255, 255, 0.35);
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
+    html { scrollbar-width: thin; scrollbar-color: #888 #050505; }
+    body {
       background: var(--bg);
       color: var(--silk);
-      font-family: "EB Garamond", "Cormorant Garamond", Georgia, serif;
+      font-family: "Cormorant Garamond", Georgia, serif;
       overflow-x: hidden;
     }
 
-    body { cursor: none; }
-    body.touch { cursor: auto; }
+    #track { height: 600vh; position: relative; }
 
-    #scroll-track {
-      height: 700vh;
-      position: relative;
-    }
-
-    .viewport {
+    .stage {
       position: sticky;
       top: 0;
       height: 100vh;
@@ -43,12 +34,23 @@
       background: #050505;
     }
 
-    #world {
+    #film {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      display: block;
+      object-fit: cover;
+      background: #050505;
+    }
+
+    .veil {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,0.55) 0%, transparent 42%),
+        linear-gradient(180deg, rgba(0,0,0,0.35) 0%, transparent 22%, transparent 70%, rgba(0,0,0,0.55) 100%);
+      z-index: 2;
     }
 
     .ui {
@@ -57,7 +59,6 @@
       z-index: 5;
       pointer-events: none;
     }
-
     .ui a, .ui button { pointer-events: auto; }
 
     .topbar {
@@ -68,48 +69,44 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 6;
     }
 
     .brand {
       font-family: "Noto Serif JP", serif;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: rgba(243, 239, 230, 0.75);
+      color: rgba(243,239,230,0.7);
     }
 
     .menu-btn {
-      border: 1px solid rgba(255, 255, 255, 0.55);
-      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255,255,255,0.55);
+      background: rgba(0,0,0,0.28);
       color: #fff;
       padding: 0.45rem 0.95rem;
-      font-family: "Cormorant Garamond", serif;
+      font: inherit;
       font-size: 0.95rem;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       backdrop-filter: blur(8px);
-      cursor: none;
+      cursor: pointer;
     }
 
     .menu {
       position: absolute;
       top: 3.6rem;
       right: 1.5rem;
-      min-width: 180px;
-      background: rgba(8, 8, 8, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 0.75rem 0;
+      min-width: 190px;
+      background: rgba(8,8,8,0.94);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 0.6rem 0;
       display: none;
-      pointer-events: auto;
-      z-index: 10;
     }
     .menu.open { display: block; }
     .menu a {
       display: block;
       padding: 0.55rem 1rem;
-      color: rgba(243, 239, 230, 0.8);
+      color: rgba(243,239,230,0.8);
       text-decoration: none;
-      font-family: "Cormorant Garamond", serif;
       font-size: 1.05rem;
     }
     .menu a:hover, .menu a.active { color: #fff; background: rgba(255,255,255,0.06); }
@@ -117,165 +114,169 @@
     .copy {
       position: absolute;
       left: clamp(1.25rem, 4vw, 3.5rem);
-      bottom: clamp(4.5rem, 12vh, 7.5rem);
-      max-width: min(420px, 78vw);
-      z-index: 6;
-      transition: opacity 0.2s linear, transform 0.2s linear;
-      text-shadow: 0 8px 28px rgba(0, 0, 0, 0.75);
+      bottom: clamp(4.2rem, 11vh, 7rem);
+      max-width: min(440px, 82vw);
+      text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      transition: opacity 0.25s ease, transform 0.25s ease;
     }
 
-    .copy .kicker {
+    .kicker {
       font-family: "Noto Serif JP", serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.32em;
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: rgba(243, 239, 230, 0.55);
+      color: rgba(243,239,230,0.5);
+      margin-bottom: 0.5rem;
+    }
+
+    .copy h1 {
+      font-weight: 600;
+      font-size: clamp(2.2rem, 5vw, 3.7rem);
+      line-height: 1.02;
       margin-bottom: 0.55rem;
     }
 
-    .copy h1, .copy h2 {
-      font-family: "Cormorant Garamond", serif;
-      font-weight: 600;
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      line-height: 1.02;
-      letter-spacing: 0.01em;
-      margin-bottom: 0.65rem;
-    }
-
-    .copy .lede {
-      font-family: "Cormorant Garamond", serif;
+    .lede {
       font-style: italic;
-      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      font-size: clamp(1.05rem, 2vw, 1.28rem);
       color: var(--muted);
-      margin-bottom: 0.9rem;
-      max-width: 34ch;
+      margin-bottom: 0.85rem;
     }
 
-    .copy .body {
+    .body {
       font-size: 1.02rem;
       line-height: 1.55;
-      color: rgba(243, 239, 230, 0.82);
-      max-height: 22vh;
-      overflow: hidden;
+      color: rgba(243,239,230,0.84);
     }
 
-    .copy .cta {
-      display: inline-flex;
+    .cta {
+      display: none;
       margin-top: 1rem;
       padding: 0.65rem 1.1rem;
-      border: 1px solid rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255,255,255,0.7);
       color: #fff;
       text-decoration: none;
-      font-family: "Cormorant Garamond", serif;
       font-size: 0.98rem;
-      letter-spacing: 0.04em;
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(6px);
-      transition: background 0.25s, color 0.25s;
+      background: rgba(0,0,0,0.25);
     }
-    .copy .cta:hover { background: #fff; color: #111; }
+    .cta.show { display: inline-flex; }
+    .cta:hover { background: #fff; color: #111; }
 
-    .footer-meta {
+    .meta {
       position: absolute;
       left: clamp(1.25rem, 4vw, 3.5rem);
       right: clamp(1.25rem, 4vw, 3.5rem);
-      bottom: 1.35rem;
+      bottom: 1.25rem;
       display: flex;
       justify-content: space-between;
-      align-items: center;
       gap: 1rem;
-      z-index: 6;
       font-family: "Noto Serif JP", serif;
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(243, 239, 230, 0.45);
-    }
-
-    .meta-pills {
-      display: flex;
-      gap: 0.85rem;
-      flex-wrap: wrap;
+      color: rgba(243,239,230,0.42);
     }
 
     .rail {
       position: absolute;
       left: 50%;
-      bottom: 0.55rem;
+      bottom: 0.5rem;
       transform: translateX(-50%);
       width: min(240px, 50vw);
       height: 2px;
-      background: rgba(255, 255, 255, 0.12);
-      z-index: 7;
+      background: rgba(255,255,255,0.12);
       overflow: hidden;
     }
-    .rail > i {
-      display: block;
-      height: 100%;
-      width: 0;
-      background: #fff;
-    }
+    .rail > i { display: block; height: 100%; width: 0; background: #fff; }
 
     .hint {
       position: absolute;
-      right: 1.4rem;
-      bottom: 3.2rem;
-      z-index: 6;
+      right: 1.35rem;
+      bottom: 3.1rem;
       writing-mode: vertical-rl;
       font-family: "Noto Serif JP", serif;
-      font-size: 0.6rem;
-      letter-spacing: 0.35em;
-      color: rgba(255, 255, 255, 0.35);
+      font-size: 0.58rem;
+      letter-spacing: 0.32em;
+      color: rgba(255,255,255,0.32);
       text-transform: uppercase;
-      animation: bob 2.4s ease-in-out infinite;
     }
 
-    @keyframes bob {
-      0%, 100% { opacity: 0.3; transform: translateY(0); }
-      50% { opacity: 0.85; transform: translateY(8px); }
+    .fallback {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: none;
+      place-items: center;
+      padding: 2rem;
+      text-align: center;
+      background:
+        linear-gradient(160deg, #1a1410, #050505),
+        url("assets/oriental-1.jpg") center/cover;
+      background-blend-mode: multiply;
     }
-
-    .cursor {
-      position: fixed; width: 28px; height: 28px;
-      border: 1px solid rgba(255,255,255,0.55); border-radius: 50%;
-      pointer-events: none; z-index: 100; transform: translate(-50%,-50%);
-      mix-blend-mode: difference;
+    .fallback.show { display: grid; }
+    .fallback-card {
+      max-width: 520px;
+      background: rgba(8,8,8,0.82);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 1.75rem 1.5rem;
+      backdrop-filter: blur(10px);
     }
-    .cursor-dot {
-      position: fixed; width: 4px; height: 4px; background: #fff; border-radius: 50%;
-      pointer-events: none; z-index: 101; transform: translate(-50%,-50%);
+    .fallback-card h2 {
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
     }
-    body.touch .cursor, body.touch .cursor-dot { display: none; }
+    .fallback-card p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 0.7rem;
+      font-size: 1.02rem;
+    }
+    .fallback-card code {
+      display: inline-block;
+      margin: 0.15rem 0;
+      padding: 0.15rem 0.4rem;
+      background: rgba(255,255,255,0.08);
+      font-family: ui-monospace, monospace;
+      font-size: 0.82rem;
+    }
 
     .loading {
-      position: fixed; inset: 0; z-index: 200; background: #050505;
-      display: grid; place-items: center;
-      transition: opacity 0.6s ease;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+      background: #050505;
+      transition: opacity 0.5s ease;
     }
     .loading.hide { opacity: 0; pointer-events: none; }
     .loading p {
-      font-family: "Cormorant Garamond", serif;
-      letter-spacing: 0.2em;
-      color: rgba(255,255,255,0.55);
-      font-size: 1rem;
+      letter-spacing: 0.18em;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.95rem;
     }
 
     @media (max-width: 720px) {
-      .copy { bottom: 5.5rem; }
-      .copy .body { max-height: 18vh; font-size: 0.95rem; }
+      .copy { bottom: 5.2rem; max-width: 88vw; }
       .hint { display: none; }
-      body { cursor: auto; }
     }
   </style>
 </head>
 <body>
-  <div class="loading" id="loading"><p>Opening the gallery…</p></div>
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="loading" id="loading"><p>Loading gallery film…</p></div>
 
-  <div id="scroll-track">
-    <div class="viewport">
-      <canvas id="world"></canvas>
+  <div id="track">
+    <div class="stage">
+      <video id="film" muted playsinline preload="auto"></video>
+      <div class="fallback" id="fallback">
+        <div class="fallback-card">
+          <h2>Add a Seedance walkthrough</h2>
+          <p>Drop your generated film at <code>assets/walkthrough.mp4</code> (or <code>assets/walkthrough.webm</code>) and refresh. Scroll will scrub the video frame-by-frame — the same technique as the reel.</p>
+          <p>Use the prompts in <code>SEEDANCE.md</code> on Jimeng / CapCut / BytePlus Seedance.</p>
+        </div>
+      </div>
+      <div class="veil"></div>
 
       <div class="ui">
         <div class="topbar">
@@ -292,409 +293,158 @@
         </div>
 
         <div class="copy" id="copy">
-          <p class="kicker" id="kicker">美術館 · Room 01</p>
+          <p class="kicker" id="kicker">美術館 · Entrance</p>
           <h1 id="title">Chinmayi R M</h1>
           <p class="lede" id="lede">The Digital Guild of Chinmayi</p>
-          <div class="body" id="body">AI Engineer · NLP &amp; Computer Vision · MakeMyTrip. Scroll to walk forward — each painting is a doorway.</div>
-          <a class="cta" id="cta" href="mailto:chinmayirm.04@gmail.com" style="display:none">Write to the guild</a>
+          <div class="body" id="body">AI Engineer · NLP &amp; Computer Vision · MakeMyTrip. Scroll to walk through each chamber.</div>
+          <a class="cta" id="cta" href="mailto:chinmayirm.04@gmail.com">Write to the guild</a>
         </div>
 
-        <div class="footer-meta">
-          <div class="meta-pills">
-            <span id="metaA">2026</span>
-            <span id="metaB">Room 01 / 06</span>
-            <span id="metaC">Scroll</span>
-          </div>
-          <span id="metaD">chinmayirm.github.io</span>
+        <div class="meta">
+          <span id="metaLeft">Room 01 / 06</span>
+          <span id="metaRight">Seedance scroll film</span>
         </div>
         <div class="rail"><i id="rail"></i></div>
-        <div class="hint">scroll to enter</div>
+        <div class="hint">scroll</div>
       </div>
     </div>
   </div>
 
   <script>
     (function () {
-      const touch = matchMedia("(hover: none), (pointer: coarse)").matches;
-      if (touch) document.body.classList.add("touch");
-
-      const canvas = document.getElementById("world");
-      const ctx = canvas.getContext("2d", { alpha: false });
-      const copy = document.getElementById("copy");
-      const rail = document.getElementById("rail");
-      const loading = document.getElementById("loading");
-      const menu = document.getElementById("menu");
-      const menuBtn = document.getElementById("menuBtn");
-
       const ROOMS = [
         {
           title: "Chinmayi R M",
           kicker: "美術館 · Entrance",
           lede: "The Digital Guild of Chinmayi",
-          body: "AI Engineer · NLP & Computer Vision · MakeMyTrip. Scroll forward — the frame becomes a corridor, and you enter the next chamber.",
-          meta: ["2026", "Entrance", "Portrait"],
-          painting: "assets/oriental-1.jpg",
-          focal: [0.5, 0.42],
-          cta: null
+          body: "AI Engineer · NLP & Computer Vision · MakeMyTrip. Scroll forward — the framed painting becomes a doorway into the next chamber.",
+          at: 0,
+          cta: false
         },
         {
           title: "The Codex",
           kicker: "写本 · Resume",
           lede: "A manuscript of craft at scale",
-          body: "MakeMyTrip Data Science: GLiNER NER on real-user traffic for autosuggest — micro F1 0.85, live on the main page. Jan–Aug 2026 internship; research paper. From Sep 2026: Software Engineer, Travelplex. Before: ISRO RRSC, CDSAML Quantum ViT, Tropes ML. PESU CSE AI&ML · GPA 8.97.",
-          meta: ["0.85 F1", "Travelplex", "PESU 8.97"],
-          painting: "assets/athens.jpg",
-          focal: [0.5, 0.38],
-          cta: null
+          body: "MakeMyTrip: GLiNER NER for autosuggest — micro F1 0.85, live on the main page (Jan–Aug 2026). From Sep 2026: Software Engineer, Travelplex. ISRO · CDSAML · PESU 8.97.",
+          at: 0.18,
+          cta: false
         },
         {
           title: "Workshop",
           kicker: "工房 · Inventions",
-          lede: "Plans laid on the bench",
-          body: "GLiNER Autosuggest · Yoda Bot · Chroma Vision · ISRO crop models · Quantum ViT · Compression analysis · Airbnb EDA · Geopolitical RAG. Hover the work later — for now, walk the hall.",
-          meta: ["8 works", "NLP", "Vision"],
-          painting: "assets/oriental-2.jpg",
-          focal: [0.48, 0.4],
-          cta: null
+          lede: "Plans on the bench",
+          body: "GLiNER Autosuggest · Yoda Bot · Chroma Vision · ISRO crop models · Quantum ViT · Compression · Airbnb EDA · Geopolitical RAG.",
+          at: 0.36,
+          cta: false
         },
         {
           title: "The Studio",
           kicker: "画廊 · Honours",
           lede: "Salon light on lacquer walls",
-          body: "Prof. C N Rao Scholarship × 4 · DELF B2 · Junior CTO Valedictorian · IIM Rohtak Innovation Finalist · Latin language ID research · Quantum ViT paper in progress.",
-          meta: ["Scholar", "DELF B2", "CTO"],
-          painting: "assets/socrates.jpg",
-          focal: [0.52, 0.4],
-          cta: null
+          body: "Prof. C N Rao Scholarship × 4 · DELF B2 · Junior CTO Valedictorian · IIM Rohtak Innovation Finalist · research in progress.",
+          at: 0.54,
+          cta: false
         },
         {
           title: "Parchment",
           kicker: "羊皮紙 · Essays",
           lede: "Ink notes from the guild",
-          body: "Teaching Autosuggest to Listen — vague queries as unfinished intent. Crops from Thirteen Bands — ISRO remote sensing. Attention, Entangled — quantum circuits in Vision Transformers.",
-          meta: ["Essays", "2024–26", "Ink"],
-          painting: "assets/oriental-3.jpg",
-          focal: [0.5, 0.45],
-          cta: null
+          body: "Teaching Autosuggest to Listen · Crops from Thirteen Bands · Attention, Entangled — quantum circuits in Vision Transformers.",
+          at: 0.72,
+          cta: false
         },
         {
           title: "Threshold",
           kicker: "門 · Contact",
           lede: "Perfect the craft, leave beauty behind",
-          body: "The Digital Guild remains open. Email, LinkedIn, or GitHub — then scroll back to the entrance if you wish to walk the rooms again.",
-          meta: ["Email", "LinkedIn", "GitHub"],
-          painting: "assets/death-socrates.jpg",
-          focal: [0.5, 0.42],
-          cta: "mailto:chinmayirm.04@gmail.com"
+          body: "The Digital Guild remains open. Email · LinkedIn · GitHub.",
+          at: 0.88,
+          cta: true
         }
       ];
 
-      const images = [];
-      let W = 0, H = 0, dpr = 1;
-      let progress = 0;
-      let wallImg = null;
+      const video = document.getElementById("film");
+      const copy = document.getElementById("copy");
+      const rail = document.getElementById("rail");
+      const loading = document.getElementById("loading");
+      const fallback = document.getElementById("fallback");
+      const menu = document.getElementById("menu");
+      const menuBtn = document.getElementById("menuBtn");
+      const cta = document.getElementById("cta");
 
-      function loadImage(src) {
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.onload = () => resolve(img);
-          img.onerror = reject;
-          img.src = src;
-        });
-      }
-
-      function resize() {
-        dpr = Math.min(devicePixelRatio || 1, 2);
-        W = innerWidth;
-        H = innerHeight;
-        canvas.width = W * dpr;
-        canvas.height = H * dpr;
-        canvas.style.width = W + "px";
-        canvas.style.height = H + "px";
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
+      let duration = 0;
+      let ready = false;
+      let targetTime = 0;
+      let displayTime = 0;
+      let ticking = false;
 
       function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
-      function lerp(a, b, t) { return a + (b - a) * t; }
-      function easeInOut(t) {
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      }
-      function smoothstep(e0, e1, x) {
-        const t = clamp((x - e0) / (e1 - e0), 0, 1);
-        return t * t * (3 - 2 * t);
-      }
 
-      function drawCover(img, dx, dy, dw, dh, fx, fy, zoom) {
-        if (!img || !img.naturalWidth) {
-          ctx.fillStyle = "#1a1510";
-          ctx.fillRect(dx, dy, dw, dh);
-          return;
-        }
-        const iw = img.naturalWidth;
-        const ih = img.naturalHeight;
-        const z = Math.max(1, Math.min(zoom || 1, 6));
-        const base = Math.max(dw / iw, dh / ih);
-        const visW = Math.min(iw, dw / (base * z));
-        const visH = Math.min(ih, dh / (base * z));
-        const sx = clamp(fx * iw - visW / 2, 0, Math.max(0, iw - visW));
-        const sy = clamp(fy * ih - visH / 2, 0, Math.max(0, ih - visH));
-        ctx.drawImage(img, sx, sy, visW, visH, dx, dy, dw, dh);
-      }
-
-      function drawFrameRect(x, y, w, h, thickness) {
-        const g = ctx.createLinearGradient(x, y, x + w, y + h);
-        g.addColorStop(0, "#f0d78c");
-        g.addColorStop(0.3, "#8a7020");
-        g.addColorStop(0.55, "#e8c96a");
-        g.addColorStop(0.8, "#5c4a14");
-        g.addColorStop(1, "#d4af37");
-        ctx.fillStyle = g;
-        ctx.fillRect(x - thickness, y - thickness, w + thickness * 2, h + thickness * 2);
-        ctx.fillStyle = "#0a0806";
-        ctx.fillRect(x - 3, y - 3, w + 6, h + 6);
-      }
-
-      function drawSilhouettes() {
-        ctx.fillStyle = "#050505";
-        const base = H * 0.92;
-        const people = [
-          [W * 0.08, 0.95], [W * 0.16, 0.88], [W * 0.78, 1], [W * 0.88, 0.9]
-        ];
-        people.forEach(([x, s]) => {
-          const h = H * 0.22 * s;
-          ctx.beginPath();
-          ctx.ellipse(x, base + 8, 28 * s, 8 * s, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.beginPath();
-          ctx.moveTo(x - 16 * s, base);
-          ctx.lineTo(x - 14 * s, base - h * 0.55);
-          ctx.quadraticCurveTo(x, base - h * 0.62, x + 14 * s, base - h * 0.55);
-          ctx.lineTo(x + 16 * s, base);
-          ctx.closePath();
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(x, base - h * 0.68, 12 * s, 0, Math.PI * 2);
-          ctx.fill();
-        });
-      }
-
-      function drawGallery(img, room, dive) {
-        const wallZoom = lerp(1.05, 1.25, dive);
-        if (wallImg && wallImg.naturalWidth) {
-          ctx.save();
-          try {
-            ctx.filter = "brightness(0.32) contrast(1.08) saturate(0.65)";
-          } catch (_) {}
-          drawCover(wallImg, 0, 0, W, H, 0.5, 0.45, wallZoom);
-          try { ctx.filter = "none"; } catch (_) {}
-          ctx.restore();
-        } else {
-          const g = ctx.createLinearGradient(0, 0, 0, H);
-          g.addColorStop(0, "#1c1712");
-          g.addColorStop(1, "#0a0806");
-          ctx.fillStyle = g;
-          ctx.fillRect(0, 0, W, H);
-        }
-
-        const floorGrad = ctx.createLinearGradient(0, H * 0.55, 0, H);
-        floorGrad.addColorStop(0, "rgba(5,5,5,0)");
-        floorGrad.addColorStop(0.35, "rgba(18,14,10,0.55)");
-        floorGrad.addColorStop(1, "#050505");
-        ctx.fillStyle = floorGrad;
-        ctx.fillRect(0, H * 0.55, W, H * 0.45);
-
-        const spot = ctx.createRadialGradient(W * 0.55, H * 0.38, 10, W * 0.55, H * 0.4, W * 0.55);
-        spot.addColorStop(0, "rgba(240,215,140,0.14)");
-        spot.addColorStop(1, "transparent");
-        ctx.fillStyle = spot;
-        ctx.fillRect(0, 0, W, H);
-
-        const targetW = lerp(Math.min(W * 0.42, 520), W * 1.02, easeInOut(dive));
-        const targetH = lerp(Math.min(H * 0.62, 640), H * 1.02, easeInOut(dive));
-        const cx = lerp(W * 0.58, W * 0.5, dive);
-        const cy = lerp(H * 0.46, H * 0.5, dive);
-        const x = cx - targetW / 2;
-        const y = cy - targetH / 2;
-        const thick = lerp(14, 0, smoothstep(0.55, 0.9, dive));
-
-        if (thick > 0.5) drawFrameRect(x, y, targetW, targetH, thick);
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.rect(x, y, Math.max(1, targetW), Math.max(1, targetH));
-        ctx.clip();
-        const paintZoom = lerp(1.05, 1.35, dive);
-        drawCover(img, x, y, targetW, targetH, room.focal[0], room.focal[1], paintZoom);
-        ctx.restore();
-
-        if (dive < 0.7) {
-          ctx.globalAlpha = 1 - dive / 0.7;
-          ctx.fillStyle = "#c23b3c";
-          ctx.fillRect(x + targetW - 44, y + targetH - 44, 28, 28);
-          ctx.fillStyle = "#f3efe6";
-          ctx.font = "14px 'Noto Serif JP', serif";
-          ctx.fillText("印", x + targetW - 38, y + targetH - 24);
-          ctx.globalAlpha = 1;
-        }
-
-        if (dive < 0.85) {
-          ctx.globalAlpha = 1 - smoothstep(0.55, 0.85, dive);
-          drawSilhouettes();
-          ctx.globalAlpha = 1;
-        }
-
-        const vig = ctx.createRadialGradient(W / 2, H / 2, W * 0.25, W / 2, H / 2, W * 0.9);
-        vig.addColorStop(0, "transparent");
-        vig.addColorStop(1, "rgba(0,0,0,0.4)");
-        ctx.fillStyle = vig;
-        ctx.fillRect(0, 0, W, H);
-      }
-
-      function drawInside(img, room, fly) {
-        const zoom = lerp(1.2, 3.4, easeInOut(fly));
-        drawCover(img, 0, 0, W, H, room.focal[0], room.focal[1], zoom);
-
-        if (fly > 0.2) {
-          const blurAmt = smoothstep(0.2, 1, fly) * 0.22;
-          ctx.save();
-          ctx.globalAlpha = blurAmt;
-          ctx.translate(W / 2, H / 2);
-          ctx.scale(1.04, 1.04);
-          ctx.translate(-W / 2, -H / 2);
-          drawCover(img, 0, 0, W, H, room.focal[0], room.focal[1], zoom * 1.06);
-          ctx.restore();
-          ctx.globalAlpha = 1;
-        }
-
-        const edge = ctx.createRadialGradient(W / 2, H / 2, W * 0.28, W / 2, H / 2, W * 0.9);
-        edge.addColorStop(0, "transparent");
-        edge.addColorStop(1, `rgba(0,0,0,${0.12 + fly * 0.28})`);
-        ctx.fillStyle = edge;
-        ctx.fillRect(0, 0, W, H);
-      }
-
-      function updateCopy(roomIndex, phase, local) {
-        const room = ROOMS[roomIndex];
-        document.getElementById("kicker").textContent = room.kicker;
-        document.getElementById("title").textContent = room.title;
-        document.getElementById("lede").textContent = room.lede;
-        document.getElementById("body").textContent = room.body;
-        document.getElementById("metaA").textContent = room.meta[0];
-        document.getElementById("metaB").textContent = `Room ${String(roomIndex + 1).padStart(2, "0")} / 06`;
-        document.getElementById("metaC").textContent = room.meta[2];
-        const cta = document.getElementById("cta");
-        if (room.cta) {
-          cta.style.display = "inline-flex";
-          cta.href = room.cta;
-          cta.textContent = "Write to the guild";
-        } else {
-          cta.style.display = "none";
-        }
-
-        // hide copy while diving / flying
-        let opacity = 1;
-        let ty = 0;
-        if (phase === "dive") {
-          opacity = 1 - smoothstep(0.2, 0.55, local);
-          ty = local * 30;
-        } else if (phase === "fly") {
-          opacity = 0;
-          ty = 40;
-        } else if (phase === "arrive") {
-          opacity = smoothstep(0.35, 0.75, local);
-          ty = lerp(24, 0, opacity);
-        }
-        copy.style.opacity = String(opacity);
-        copy.style.transform = `translateY(${ty}px)`;
-
-        document.querySelectorAll("#menu a").forEach((a) => {
-          a.classList.toggle("active", Number(a.dataset.i) === roomIndex);
-        });
-      }
-
-      function render(p) {
-        const n = ROOMS.length;
-        const seg = 1 / n;
-        const raw = clamp(p, 0, 0.99999);
-        const idx = Math.min(n - 1, Math.floor(raw / seg));
-        const local = (raw - idx * seg) / seg;
-        const room = ROOMS[idx];
-        const img = images[idx];
-        const nextIdx = Math.min(idx + 1, n - 1);
-        const next = images[nextIdx];
-        const nextRoom = ROOMS[nextIdx];
-
-        if (!img) {
-          ctx.fillStyle = "#12100c";
-          ctx.fillRect(0, 0, W, H);
-          return;
-        }
-
-        ctx.fillStyle = "#050505";
-        ctx.fillRect(0, 0, W, H);
-
-        let phase = "settle";
-        let t = 0;
-        let copyIdx = idx;
-
-        if (local < 0.22) {
-          phase = "settle";
-          t = local / 0.22;
-          drawGallery(img, room, 0);
-        } else if (local < 0.48) {
-          phase = "dive";
-          t = (local - 0.22) / 0.26;
-          drawGallery(img, room, easeInOut(t));
-        } else if (local < 0.72) {
-          phase = "fly";
-          t = (local - 0.48) / 0.24;
-          drawInside(img, room, easeInOut(t));
-          if (idx < n - 1) {
-            const a = smoothstep(0.35, 1, t);
-            if (a > 0) {
-              ctx.globalAlpha = a;
-              drawGallery(next, nextRoom, lerp(0.7, 0.05, a));
-              ctx.globalAlpha = 1;
-            }
-            if (a > 0.55) copyIdx = nextIdx;
-          }
-        } else {
-          phase = "arrive";
-          t = (local - 0.72) / 0.28;
-          if (idx < n - 1) {
-            drawGallery(next, nextRoom, lerp(0.08, 0, easeInOut(t)));
-            copyIdx = nextIdx;
-            phase = t < 0.4 ? "arrive" : "settle";
-          } else {
-            drawGallery(img, room, 0);
-          }
-        }
-
-        updateCopy(copyIdx, phase === "arrive" && copyIdx === nextIdx ? "arrive" : phase, t);
-        rail.style.width = (local * 100).toFixed(2) + "%";
-      }
-
-      function scrollP() {
-        const track = document.getElementById("scroll-track");
+      function scrollProgress() {
+        const track = document.getElementById("track");
         const max = track.offsetHeight - innerHeight;
         return max > 0 ? clamp(scrollY / max, 0, 1) : 0;
       }
 
-      let ticking = false;
+      function setCopy(p) {
+        let idx = 0;
+        for (let i = 0; i < ROOMS.length; i++) {
+          if (p >= ROOMS[i].at) idx = i;
+        }
+        const room = ROOMS[idx];
+        const nextAt = ROOMS[idx + 1] ? ROOMS[idx + 1].at : 1;
+        const mid = (room.at + nextAt) / 2;
+        const edge = Math.min(Math.abs(p - room.at), Math.abs(p - nextAt));
+        const fade = edge < 0.04 ? edge / 0.04 : 1;
+
+        // hide text during hard dive windows (between room centers)
+        const diveZone = p > mid - 0.03 && p < mid + 0.03;
+        copy.style.opacity = diveZone ? "0" : String(0.35 + fade * 0.65);
+        copy.style.transform = diveZone ? "translateY(18px)" : "translateY(0)";
+
+        document.getElementById("kicker").textContent = room.kicker;
+        document.getElementById("title").textContent = room.title;
+        document.getElementById("lede").textContent = room.lede;
+        document.getElementById("body").textContent = room.body;
+        document.getElementById("metaLeft").textContent =
+          `Room ${String(idx + 1).padStart(2, "0")} / 06`;
+        cta.classList.toggle("show", !!room.cta);
+
+        menu.querySelectorAll("a").forEach((a) => {
+          a.classList.toggle("active", Number(a.dataset.i) === idx);
+        });
+      }
+
+      function syncVideo() {
+        if (!ready || !duration) return;
+        const p = scrollProgress();
+        targetTime = p * duration;
+        rail.style.width = (p * 100).toFixed(2) + "%";
+        setCopy(p);
+
+        // smooth scrub (lerp) for buttery feel
+        displayTime += (targetTime - displayTime) * 0.22;
+        if (Math.abs(targetTime - displayTime) < 0.01) displayTime = targetTime;
+
+        if (Math.abs(video.currentTime - displayTime) > 0.02) {
+          try { video.currentTime = displayTime; } catch (_) {}
+        }
+      }
+
       function onScroll() {
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
-          progress = scrollP();
-          render(progress);
+          syncVideo();
           ticking = false;
         });
       }
 
       function goRoom(i) {
-        const track = document.getElementById("scroll-track");
+        const track = document.getElementById("track");
         const max = track.offsetHeight - innerHeight;
-        scrollTo({ top: ((i + 0.02) / ROOMS.length) * max, behavior: "smooth" });
+        const p = ROOMS[i].at + 0.01;
+        scrollTo({ top: p * max, behavior: "smooth" });
         menu.classList.remove("open");
       }
 
@@ -706,41 +456,52 @@
         });
       });
 
-      if (!touch) {
-        const cur = document.getElementById("cursor");
-        const dot = document.getElementById("cursorDot");
-        let cx = 0, cy = 0, dx = 0, dy = 0;
-        addEventListener("pointermove", (e) => {
-          dx = e.clientX; dy = e.clientY;
-          dot.style.left = dx + "px";
-          dot.style.top = dy + "px";
-        }, { passive: true });
-        (function follow() {
-          cx += (dx - cx) * 0.2;
-          cy += (dy - cy) * 0.2;
-          cur.style.left = cx + "px";
-          cur.style.top = cy + "px";
-          requestAnimationFrame(follow);
-        })();
+      function useFallback() {
+        fallback.classList.add("show");
+        video.style.display = "none";
+        loading.classList.add("hide");
+        setCopy(scrollProgress());
       }
 
-      Promise.all([
-        loadImage("assets/room-stone.jpg").catch(() => loadImage("assets/gallery-wall.jpg")),
-        ...ROOMS.map((r) => loadImage(r.painting))
-      ]).then(([wall, ...imgs]) => {
-        wallImg = wall;
-        imgs.forEach((img, i) => { images[i] = img; });
-        resize();
-        render(0);
+      function armVideo() {
+        duration = video.duration || 0;
+        if (!duration || !isFinite(duration)) {
+          useFallback();
+          return;
+        }
+        ready = true;
+        video.pause();
+        syncVideo();
         loading.classList.add("hide");
-        setTimeout(() => loading.remove(), 700);
-      }).catch((err) => {
-        console.error(err);
-        loading.querySelector("p").textContent = "Could not load gallery assets.";
-      });
+        setTimeout(() => loading.remove(), 600);
+      }
+
+      // Prefer Seedance export; try mp4 then webm
+      const sources = ["assets/walkthrough.mp4", "assets/walkthrough.webm"];
+      let si = 0;
+
+      function trySource() {
+        if (si >= sources.length) {
+          useFallback();
+          return;
+        }
+        video.src = sources[si++];
+        video.load();
+      }
+
+      video.addEventListener("loadedmetadata", armVideo);
+      video.addEventListener("error", trySource);
 
       addEventListener("scroll", onScroll, { passive: true });
-      addEventListener("resize", () => { resize(); render(scrollP()); }, { passive: true });
+      addEventListener("resize", onScroll, { passive: true });
+
+      // continuous lerp even when scroll stops mid-transition
+      (function loop() {
+        if (ready) syncVideo();
+        requestAnimationFrame(loop);
+      })();
+
+      trySource();
     })();
   </script>
 </body>
