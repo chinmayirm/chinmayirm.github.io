@@ -4,689 +4,671 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chinmayi R M — The Digital Guild</title>
-  <meta name="description" content="Walk the Digital Guild — a dark oriental museum. Scroll to enter each room." />
+  <meta name="description" content="Scroll to walk the museum — enter each room through the painting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+JP:wght@300;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+JP:wght@300;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #050403;
-      --ink: #0c0a08;
+      --bg: #050505;
+      --silk: #f3efe6;
+      --muted: rgba(243, 239, 230, 0.72);
       --gold: #d4af37;
-      --gold-bright: #f0d78c;
-      --vermillion: #c23b3c;
-      --silk: #efe6d6;
-      --muted: rgba(239, 230, 214, 0.68);
-      --line: rgba(212, 175, 55, 0.28);
-      --panel: rgba(10, 8, 6, 0.72);
-      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --line: rgba(255, 255, 255, 0.35);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scrollbar-width: thin; scrollbar-color: var(--gold) var(--bg); }
-    body {
-      font-family: "EB Garamond", "Noto Serif JP", Georgia, serif;
+
+    html, body {
       background: var(--bg);
       color: var(--silk);
+      font-family: "EB Garamond", "Cormorant Garamond", Georgia, serif;
       overflow-x: hidden;
-      line-height: 1.55;
+    }
+
+    body { cursor: none; }
+    body.touch { cursor: auto; }
+
+    #scroll-track {
+      height: 700vh;
+      position: relative;
+    }
+
+    .viewport {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      background: #050505;
+    }
+
+    #world {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .ui {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .ui a, .ui button { pointer-events: auto; }
+
+    .topbar {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 6;
+    }
+
+    .brand {
+      font-family: "Noto Serif JP", serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(243, 239, 230, 0.75);
+    }
+
+    .menu-btn {
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      background: rgba(0, 0, 0, 0.25);
+      color: #fff;
+      padding: 0.45rem 0.95rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      backdrop-filter: blur(8px);
       cursor: none;
     }
-    body.touch { cursor: auto; }
-    body.touch .cursor, body.touch .cursor-dot { display: none !important; }
-    img { display: block; max-width: 100%; }
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; background: none; border: none; color: inherit; cursor: none; }
+
+    .menu {
+      position: absolute;
+      top: 3.6rem;
+      right: 1.5rem;
+      min-width: 180px;
+      background: rgba(8, 8, 8, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.75rem 0;
+      display: none;
+      pointer-events: auto;
+      z-index: 10;
+    }
+    .menu.open { display: block; }
+    .menu a {
+      display: block;
+      padding: 0.55rem 1rem;
+      color: rgba(243, 239, 230, 0.8);
+      text-decoration: none;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.05rem;
+    }
+    .menu a:hover, .menu a.active { color: #fff; background: rgba(255,255,255,0.06); }
+
+    .copy {
+      position: absolute;
+      left: clamp(1.25rem, 4vw, 3.5rem);
+      bottom: clamp(4.5rem, 12vh, 7.5rem);
+      max-width: min(420px, 78vw);
+      z-index: 6;
+      transition: opacity 0.2s linear, transform 0.2s linear;
+      text-shadow: 0 8px 28px rgba(0, 0, 0, 0.75);
+    }
+
+    .copy .kicker {
+      font-family: "Noto Serif JP", serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(243, 239, 230, 0.55);
+      margin-bottom: 0.55rem;
+    }
+
+    .copy h1, .copy h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 600;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1.02;
+      letter-spacing: 0.01em;
+      margin-bottom: 0.65rem;
+    }
+
+    .copy .lede {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+      max-width: 34ch;
+    }
+
+    .copy .body {
+      font-size: 1.02rem;
+      line-height: 1.55;
+      color: rgba(243, 239, 230, 0.82);
+      max-height: 22vh;
+      overflow: hidden;
+    }
+
+    .copy .cta {
+      display: inline-flex;
+      margin-top: 1rem;
+      padding: 0.65rem 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      color: #fff;
+      text-decoration: none;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 0.98rem;
+      letter-spacing: 0.04em;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(6px);
+      transition: background 0.25s, color 0.25s;
+    }
+    .copy .cta:hover { background: #fff; color: #111; }
+
+    .footer-meta {
+      position: absolute;
+      left: clamp(1.25rem, 4vw, 3.5rem);
+      right: clamp(1.25rem, 4vw, 3.5rem);
+      bottom: 1.35rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      z-index: 6;
+      font-family: "Noto Serif JP", serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(243, 239, 230, 0.45);
+    }
+
+    .meta-pills {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .rail {
+      position: absolute;
+      left: 50%;
+      bottom: 0.55rem;
+      transform: translateX(-50%);
+      width: min(240px, 50vw);
+      height: 2px;
+      background: rgba(255, 255, 255, 0.12);
+      z-index: 7;
+      overflow: hidden;
+    }
+    .rail > i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: #fff;
+    }
+
+    .hint {
+      position: absolute;
+      right: 1.4rem;
+      bottom: 3.2rem;
+      z-index: 6;
+      writing-mode: vertical-rl;
+      font-family: "Noto Serif JP", serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      color: rgba(255, 255, 255, 0.35);
+      text-transform: uppercase;
+      animation: bob 2.4s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50% { opacity: 0.85; transform: translateY(8px); }
+    }
 
     .cursor {
-      position: fixed; width: 34px; height: 34px; border: 1px solid rgba(212,175,55,.55);
-      border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%);
-      transition: width .25s, height .25s, background .25s; mix-blend-mode: difference;
+      position: fixed; width: 28px; height: 28px;
+      border: 1px solid rgba(255,255,255,0.55); border-radius: 50%;
+      pointer-events: none; z-index: 100; transform: translate(-50%,-50%);
+      mix-blend-mode: difference;
     }
-    .cursor.hover { width: 54px; height: 54px; background: rgba(212,175,55,.08); }
     .cursor-dot {
-      position: fixed; width: 4px; height: 4px; background: var(--gold-bright); border-radius: 50%;
-      pointer-events: none; z-index: 10000; transform: translate(-50%,-50%);
-      box-shadow: 0 0 10px rgba(240,215,140,.7);
+      position: fixed; width: 4px; height: 4px; background: #fff; border-radius: 50%;
+      pointer-events: none; z-index: 101; transform: translate(-50%,-50%);
     }
+    body.touch .cursor, body.touch .cursor-dot { display: none; }
 
-    .progress {
-      position: fixed; top: 0; left: 0; height: 2px; width: 0; z-index: 200;
-      background: linear-gradient(90deg, var(--vermillion), var(--gold), var(--gold-bright));
-      box-shadow: 0 0 12px rgba(212,175,55,.5); pointer-events: none;
+    .loading {
+      position: fixed; inset: 0; z-index: 200; background: #050505;
+      display: grid; place-items: center;
+      transition: opacity 0.6s ease;
     }
-
-    .nav {
-      position: fixed; inset: 0 0 auto; z-index: 150;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 1.75rem;
-      background: linear-gradient(180deg, rgba(5,4,3,.85), transparent);
-      pointer-events: none;
-    }
-    .nav a, .nav button { pointer-events: auto; }
-    .nav-brand {
-      font-family: "Cinzel Decorative", serif; font-size: .75rem; letter-spacing: .22em;
-      color: var(--gold); text-transform: uppercase; display: flex; align-items: center; gap: .55rem;
-    }
-    .seal {
-      width: 22px; height: 22px; display: grid; place-items: center;
-      background: var(--vermillion); color: var(--silk);
-      font-family: "Noto Serif JP", serif; font-size: .7rem;
-    }
-    .nav-links {
-      display: flex; gap: 1.1rem; list-style: none;
-      font-family: "Cormorant Garamond", serif; font-size: 1rem; letter-spacing: .05em;
-    }
-    .nav-links a { color: var(--muted); transition: color .25s; }
-    .nav-links a.active, .nav-links a:hover { color: var(--gold-bright); }
-    .nav-toggle {
-      display: none; border: 1px solid var(--gold); color: var(--gold);
-      padding: .35rem .7rem; letter-spacing: .1em;
-    }
-
-    /* —— Museum journey —— */
-    #journey {
-      position: relative;
-      height: calc(var(--rooms, 6) * 170vh);
-    }
-
-    .stage {
-      position: sticky; top: 0;
-      height: 100vh; height: 100dvh;
-      overflow: hidden;
-      perspective: 1400px;
-      perspective-origin: 50% 45%;
-    }
-
-    .stage-fog {
-      position: absolute; inset: 0; z-index: 8; pointer-events: none;
-      background:
-        radial-gradient(ellipse at center, transparent 35%, rgba(5,4,3,.55) 100%),
-        linear-gradient(180deg, rgba(5,4,3,.35), transparent 18%, transparent 72%, rgba(5,4,3,.75));
-    }
-
-    .floor {
-      position: absolute; left: -10%; right: -10%; bottom: -5%; height: 42%;
-      z-index: 2; pointer-events: none;
-      background:
-        linear-gradient(180deg, transparent, rgba(5,4,3,.35) 20%, rgba(12,10,8,.92)),
-        repeating-linear-gradient(90deg, rgba(212,175,55,.04) 0 2px, transparent 2px 48px),
-        linear-gradient(180deg, #1a1510, #0a0806);
-      transform: rotateX(72deg);
-      transform-origin: center top;
-      opacity: .9;
-    }
-
-    .silhouettes {
-      position: absolute; left: 0; right: 0; bottom: 0; height: 28vh;
-      z-index: 9; pointer-events: none;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cg fill='%23050303'%3E%3Cellipse cx='90' cy='200' rx='40' ry='12'/%3E%3Cpath d='M70 200v-70c0-18 12-28 28-28s28 10 28 28v70'/%3E%3Ccircle cx='98' cy='88' r='16'/%3E%3Cellipse cx='230' cy='200' rx='36' ry='10'/%3E%3Cpath d='M210 200v-78c0-16 14-26 26-26s22 10 22 26v78'/%3E%3Ccircle cx='236' cy='82' r='14'/%3E%3Cellipse cx='980' cy='200' rx='42' ry='12'/%3E%3Cpath d='M958 200v-74c0-18 14-30 30-30s30 12 30 30v74'/%3E%3Ccircle cx='988' cy='82' r='17'/%3E%3Cellipse cx='1100' cy='200' rx='34' ry='10'/%3E%3Cpath d='M1080 200v-66c0-14 12-24 24-24s22 10 22 24v66'/%3E%3Ccircle cx='1104' cy='96' r='13'/%3E%3C/g%3E%3C/svg%3E") bottom/100% 100% no-repeat;
-      opacity: .92;
-      filter: blur(0.2px);
-    }
-
-    .room {
-      position: absolute; inset: 0;
-      display: grid;
-      grid-template-columns: minmax(280px, 0.9fr) 1.2fr;
-      align-items: center;
-      gap: clamp(1rem, 3vw, 3rem);
-      padding: 5.5rem clamp(1.2rem, 4vw, 4rem) 4rem;
-      transform-style: preserve-3d;
-      will-change: transform, opacity, filter;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .room.active { pointer-events: auto; z-index: 5; }
-    .room.incoming { z-index: 6; }
-
-    .room-wall {
-      position: absolute; inset: 0; z-index: 0;
-      background:
-        linear-gradient(90deg, rgba(5,4,3,.72), rgba(5,4,3,.25) 40%, rgba(5,4,3,.55)),
-        url("assets/room-stone.jpg") center/cover;
-      filter: brightness(.35) contrast(1.15) saturate(.7);
-      transform: translateZ(-200px) scale(1.25);
-    }
-
-    .room-copy {
-      position: relative; z-index: 3;
-      max-width: 420px;
-      transform: translateZ(40px);
-    }
-
-    .room-kicker {
-      font-family: "Noto Serif JP", serif;
-      font-size: .68rem; letter-spacing: .36em; color: var(--gold);
-      text-transform: uppercase; margin-bottom: .85rem;
-    }
-
-    .room-title {
-      font-family: "Cinzel Decorative", serif;
-      font-size: clamp(2rem, 4.5vw, 3.6rem);
-      line-height: 1.05; color: var(--silk);
-      text-shadow: 0 10px 40px rgba(0,0,0,.65);
-      margin-bottom: .7rem;
-    }
-
-    .room-lede {
+    .loading.hide { opacity: 0; pointer-events: none; }
+    .loading p {
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(1.05rem, 2vw, 1.3rem);
-      font-style: italic; color: var(--muted);
-      margin-bottom: 1.25rem; max-width: 34ch;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.55);
+      font-size: 1rem;
     }
 
-    .room-body {
-      font-size: 1.02rem; color: rgba(239,230,214,.82);
-      margin-bottom: 1.2rem; max-height: 38vh; overflow: auto;
-      padding-right: .35rem; scrollbar-width: thin;
-    }
-    .room-body p + p { margin-top: .75rem; }
-    .room-body strong { color: var(--gold-bright); font-weight: 600; }
-
-    .drop::first-letter {
-      float: left; font-family: "Cinzel Decorative", serif;
-      font-size: 3.2rem; line-height: .8; padding: .1rem .45rem 0 0;
-      color: var(--vermillion);
-    }
-
-    .meta-row {
-      display: flex; flex-wrap: wrap; gap: .7rem 1.1rem;
-      font-family: "Noto Serif JP", serif; font-size: .68rem;
-      letter-spacing: .14em; color: rgba(212,175,55,.7);
-      margin-top: 1rem; text-transform: uppercase;
-    }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: .4rem;
-      margin-top: .35rem; padding: .75rem 1.25rem;
-      font-family: "Cormorant Garamond", serif; font-size: 1rem; letter-spacing: .08em;
-      border: 1px solid rgba(239,230,214,.85); color: var(--silk);
-      transition: background .3s, color .3s, transform .3s;
-    }
-    .btn:hover { background: var(--silk); color: #0c0a08; transform: translateY(-2px); }
-    .btn-gold { background: var(--gold); color: #0c0a08; border-color: var(--gold); }
-    .btn-gold:hover { background: var(--gold-bright); }
-
-    .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .9rem; }
-    .chip {
-      font-size: .78rem; padding: .25rem .55rem;
-      border: 1px solid rgba(61,107,88,.5); color: #9fceb8;
-      font-family: "Cormorant Garamond", serif;
-    }
-
-    .timeline { list-style: none; margin-top: .4rem; }
-    .timeline li {
-      position: relative; padding: .55rem 0 .55rem 1.1rem;
-      border-left: 1px solid rgba(212,175,55,.25);
-    }
-    .timeline li::before {
-      content: ""; position: absolute; left: -4px; top: .95rem;
-      width: 7px; height: 7px; border-radius: 50%; background: var(--gold);
-    }
-    .tl-role { font-family: "Cormorant Garamond", serif; font-weight: 700; font-size: 1.05rem; }
-    .tl-org { color: #e07070; font-style: italic; font-size: .95rem; }
-    .tl-dates { font-size: .7rem; letter-spacing: .08em; color: rgba(212,175,55,.65); text-transform: uppercase; }
-
-    /* Artwork frame */
-    .artwork {
-      position: relative; z-index: 3; justify-self: center;
-      width: min(520px, 46vw);
-      transform-style: preserve-3d;
-      transform: translateZ(20px);
-    }
-
-    .frame-ornate {
-      padding: clamp(10px, 1.2vw, 16px);
-      background: linear-gradient(145deg, #f0d78c, #8a7020 28%, #e8c96a 52%, #5c4a14 78%, #d4af37);
-      box-shadow:
-        0 0 0 2px #0a0806,
-        0 0 60px rgba(212,175,55,.18),
-        0 35px 80px rgba(0,0,0,.7),
-        inset 0 0 20px rgba(0,0,0,.3);
-      position: relative;
-    }
-    .frame-ornate::before {
-      content: ""; position: absolute; inset: 5px;
-      border: 1px solid rgba(10,8,6,.5); pointer-events: none; z-index: 2;
-    }
-    .frame-ornate::after {
-      content: "印"; position: absolute; right: 18px; bottom: 18px; z-index: 3;
-      width: 30px; height: 30px; display: grid; place-items: center;
-      background: var(--vermillion); color: var(--silk);
-      font-family: "Noto Serif JP", serif; font-size: .85rem;
-      box-shadow: 2px 2px 0 rgba(0,0,0,.4);
-    }
-
-    .frame-glass {
-      aspect-ratio: 4 / 5;
-      overflow: hidden; background: #070605; border: 3px solid #0a0806;
-      position: relative;
-    }
-    .frame-glass.wide { aspect-ratio: 16 / 11; }
-    .frame-glass img, .frame-glass .blank {
-      width: 100%; height: 100%; object-fit: cover;
-      transform-origin: center center;
-      will-change: transform;
-    }
-    .blank {
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem;
-      background:
-        repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(212,175,55,.04) 14px, rgba(212,175,55,.04) 15px),
-        #12100c;
-      border: 1px dashed rgba(212,175,55,.35);
-      color: rgba(212,175,55,.7);
-      font-family: "Cormorant Garamond", serif; letter-spacing: .12em;
-    }
-    .blank small {
-      font-family: "Noto Serif JP", serif; font-size: .62rem;
-      letter-spacing: .2em; color: rgba(239,230,214,.3); text-transform: uppercase;
-    }
-
-    .spotlight {
-      position: absolute; inset: -8%; z-index: 1; pointer-events: none;
-      background: radial-gradient(ellipse at 50% 35%, rgba(240,215,140,.16), transparent 55%);
-      mix-blend-mode: soft-light;
-    }
-
-    /* Project strip inside workshop room */
-    .proj-strip {
-      display: flex; gap: .65rem; overflow-x: auto; padding-bottom: .4rem;
-      scrollbar-width: thin; max-width: 100%;
-    }
-    .proj-card {
-      flex: 0 0 150px; border: 1px solid var(--line);
-      background: rgba(10,8,6,.65); overflow: hidden;
-      transition: transform .3s, border-color .3s;
-    }
-    .proj-card:hover { transform: translateY(-4px); border-color: var(--gold); }
-    .proj-card img { width: 100%; height: 90px; object-fit: cover; filter: sepia(.55) saturate(.5) brightness(.85); transition: filter .4s; }
-    .proj-card:hover img { filter: none; }
-    .proj-card span {
-      display: block; padding: .45rem .5rem .55rem;
-      font-family: "Cormorant Garamond", serif; font-size: .88rem;
-    }
-
-    .gallery-mini {
-      display: grid; grid-template-columns: 1fr 1fr; gap: .55rem;
-    }
-    .gallery-mini figure {
-      overflow: hidden;
-      box-shadow: 0 0 0 2px #0a0806, 0 0 0 5px rgba(212,175,55,.75);
-      aspect-ratio: 1;
-    }
-    .gallery-mini img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.85); transition: filter .35s, transform .45s; }
-    .gallery-mini figure:hover img { filter: brightness(1); transform: scale(1.05); }
-
-    .hud {
-      position: absolute; left: 50%; bottom: 1.15rem; transform: translateX(-50%);
-      z-index: 12; display: flex; align-items: center; gap: 1rem;
-      font-family: "Noto Serif JP", serif; font-size: .62rem; letter-spacing: .2em;
-      color: rgba(212,175,55,.55); text-transform: uppercase;
-      pointer-events: none;
-    }
-    .hud-bar {
-      width: min(220px, 40vw); height: 2px; background: rgba(212,175,55,.15); overflow: hidden;
-    }
-    .hud-bar > i { display: block; height: 100%; width: 0; background: var(--gold); }
-
-    .scroll-hint {
-      position: absolute; right: 1.5rem; bottom: 1.3rem; z-index: 12;
-      font-family: "Noto Serif JP", serif; font-size: .62rem; letter-spacing: .28em;
-      color: rgba(212,175,55,.4); writing-mode: vertical-rl; text-transform: uppercase;
-      animation: pulse 2.4s ease-in-out infinite; pointer-events: none;
-    }
-    @keyframes pulse {
-      0%,100% { opacity: .35; transform: translateY(0); }
-      50% { opacity: .9; transform: translateY(6px); }
-    }
-
-    .footer-room .room-copy { max-width: 520px; }
-    .links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; font-family: "Cormorant Garamond", serif; font-size: 1.1rem; }
-    .links a { color: var(--gold-bright); border-bottom: 1px solid transparent; }
-    .links a:hover { border-bottom-color: var(--gold); }
-
-    @media (max-width: 900px) {
+    @media (max-width: 720px) {
+      .copy { bottom: 5.5rem; }
+      .copy .body { max-height: 18vh; font-size: 0.95rem; }
+      .hint { display: none; }
       body { cursor: auto; }
-      .cursor, .cursor-dot { display: none; }
-      .room {
-        grid-template-columns: 1fr;
-        align-content: center;
-        padding: 5rem 1.25rem 5.5rem;
-        gap: 1.25rem;
-      }
-      .artwork { width: min(320px, 78vw); order: -1; }
-      .room-body { max-height: 28vh; }
-      .nav-links { display: none; }
-      .nav-links.open {
-        display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0;
-        background: rgba(5,4,3,.96); padding: 1rem 1.5rem 1.4rem; gap: .85rem;
-        pointer-events: auto; border-bottom: 1px solid var(--line);
-      }
-      .nav-toggle { display: block; }
-      .silhouettes { height: 18vh; opacity: .75; }
-      .floor { height: 30%; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .scroll-hint { animation: none; }
     }
   </style>
 </head>
 <body>
-  <div class="progress" id="progress"></div>
+  <div class="loading" id="loading"><p>Opening the gallery…</p></div>
   <div class="cursor" id="cursor"></div>
   <div class="cursor-dot" id="cursorDot"></div>
 
-  <nav class="nav">
-    <a class="nav-brand" href="#journey"><span class="seal">印</span> Chinmayi</a>
-    <button class="nav-toggle" id="navToggle" type="button">Menu</button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#" data-room="0">Entrance</a></li>
-      <li><a href="#" data-room="1">Codex</a></li>
-      <li><a href="#" data-room="2">Workshop</a></li>
-      <li><a href="#" data-room="3">Studio</a></li>
-      <li><a href="#" data-room="4">Parchment</a></li>
-      <li><a href="#" data-room="5">Exit</a></li>
-    </ul>
-  </nav>
+  <div id="scroll-track">
+    <div class="viewport">
+      <canvas id="world"></canvas>
 
-  <main id="journey" style="--rooms: 6">
-    <div class="stage" id="stage">
-      <div class="stage-fog"></div>
-      <div class="floor"></div>
-      <div class="silhouettes"></div>
+      <div class="ui">
+        <div class="topbar">
+          <div class="brand">Digital Guild · 印</div>
+          <button class="menu-btn" id="menuBtn" type="button">Menu</button>
+        </div>
+        <div class="menu" id="menu">
+          <a href="#" data-i="0">Entrance</a>
+          <a href="#" data-i="1">The Codex</a>
+          <a href="#" data-i="2">Workshop</a>
+          <a href="#" data-i="3">Studio</a>
+          <a href="#" data-i="4">Parchment</a>
+          <a href="#" data-i="5">Threshold</a>
+        </div>
 
-      <!-- ROOM 0: Entrance -->
-      <section class="room active" data-room="0">
-        <div class="room-wall"></div>
-        <div class="spotlight"></div>
-        <div class="room-copy">
-          <p class="room-kicker">美術館 · Entrance Hall</p>
-          <h1 class="room-title">Chinmayi R M</h1>
-          <p class="room-lede">The Digital Guild — scroll to walk through each chamber.</p>
-          <p class="room-body">AI Engineer · NLP &amp; Computer Vision · MakeMyTrip. A dark oriental museum of craft, models, and manuscripts.</p>
-          <a class="btn btn-gold" href="#" data-room="1">Enter the next room →</a>
-          <div class="meta-row"><span>Guild 2026</span><span>PESU · 8.97</span><span>Travelplex</span></div>
+        <div class="copy" id="copy">
+          <p class="kicker" id="kicker">美術館 · Room 01</p>
+          <h1 id="title">Chinmayi R M</h1>
+          <p class="lede" id="lede">The Digital Guild of Chinmayi</p>
+          <div class="body" id="body">AI Engineer · NLP &amp; Computer Vision · MakeMyTrip. Scroll to walk forward — each painting is a doorway.</div>
+          <a class="cta" id="cta" href="mailto:chinmayirm.04@gmail.com" style="display:none">Write to the guild</a>
         </div>
-        <div class="artwork">
-          <div class="frame-ornate">
-            <div class="frame-glass">
-              <div class="blank" role="img" aria-label="Portrait placeholder">
-                <span>Your portrait here</span>
-                <small>assets/portrait.jpg</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <!-- ROOM 1: Codex -->
-      <section class="room" data-room="1">
-        <div class="room-wall"></div>
-        <div class="spotlight"></div>
-        <div class="room-copy">
-          <p class="room-kicker">写本 · The Codex</p>
-          <h2 class="room-title">Resume &amp; Profile</h2>
-          <p class="room-lede">A manuscript chamber of education and achievements.</p>
-          <div class="room-body">
-            <p class="drop">Across satellites, transformers, and travel platforms, I shape language and vision models at scale. At MakeMyTrip I trained a GLiNER NER system on large real-user traffic for autosuggest — endpoint micro F1 <strong>0.85</strong>, live on the main page.</p>
-            <p>Internship Jan–Aug 2026 deepened conversational quality and reduced vague queries; research paper authored. From Sep 2026: Software Engineer, Travelplex — AI engineering.</p>
-            <ul class="timeline">
-              <li>
-                <div class="tl-role">Software Engineer — AI</div>
-                <div class="tl-org">MakeMyTrip · Travelplex</div>
-                <div class="tl-dates">Sep 2026 — Present</div>
-              </li>
-              <li>
-                <div class="tl-role">Data Science Intern</div>
-                <div class="tl-org">MakeMyTrip · GLiNER NER</div>
-                <div class="tl-dates">Jan 2026 — Aug 2026</div>
-              </li>
-              <li>
-                <div class="tl-role">Summer Intern</div>
-                <div class="tl-org">ISRO — RRSC South</div>
-                <div class="tl-dates">Jun 2025 — Jul 2025</div>
-              </li>
-              <li>
-                <div class="tl-role">ML / Research / TA</div>
-                <div class="tl-org">Tropes · CDSAML · PESU</div>
-                <div class="tl-dates">2024</div>
-              </li>
-            </ul>
-            <div class="chips">
-              <span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">NLP</span>
-              <span class="chip">Vision</span><span class="chip">Spark</span><span class="chip">LLMs</span>
-            </div>
+        <div class="footer-meta">
+          <div class="meta-pills">
+            <span id="metaA">2026</span>
+            <span id="metaB">Room 01 / 06</span>
+            <span id="metaC">Scroll</span>
           </div>
-          <div class="meta-row"><span>GPA 8.97</span><span>ISRO</span><span>GLiNER 0.85</span></div>
+          <span id="metaD">chinmayirm.github.io</span>
         </div>
-        <div class="artwork">
-          <div class="frame-ornate">
-            <div class="frame-glass">
-              <img src="assets/room-paint-2.jpg" alt="Codex chamber painting" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ROOM 2: Workshop -->
-      <section class="room" data-room="2">
-        <div class="room-wall"></div>
-        <div class="spotlight"></div>
-        <div class="room-copy">
-          <p class="room-kicker">工房 · The Workshop</p>
-          <h2 class="room-title">Inventions</h2>
-          <p class="room-lede">Architectural plans and working prototypes on the bench.</p>
-          <div class="room-body">
-            <div class="proj-strip">
-              <a class="proj-card" href="https://github.com/chinmayirm/Yoda-Bot" target="_blank" rel="noopener">
-                <img src="assets/project-yoda.jpg" alt="" /><span>Yoda Bot</span>
-              </a>
-              <a class="proj-card" href="https://github.com/chinmayirm/Chroma-Vision" target="_blank" rel="noopener">
-                <img src="assets/project-chroma.jpg" alt="" /><span>Chroma Vision</span>
-              </a>
-              <div class="proj-card">
-                <img src="assets/project-gliner.jpg" alt="" /><span>GLiNER NER</span>
-              </div>
-              <div class="proj-card">
-                <img src="assets/project-isro.jpg" alt="" /><span>ISRO Crops</span>
-              </div>
-              <a class="proj-card" href="https://github.com/chinmayirm/Comparative-Analysis-of-Image-Compression-Techniques-using-Machine-Learning" target="_blank" rel="noopener">
-                <img src="assets/project-compress.jpg" alt="" /><span>Compression</span>
-              </a>
-              <div class="proj-card">
-                <img src="assets/project-qvit.jpg" alt="" /><span>Quantum ViT</span>
-              </div>
-            </div>
-            <p style="margin-top:1rem">Production NER for autosuggest, remote-sensing pipelines, dialogue agents, and quantum-augmented vision.</p>
-          </div>
-          <div class="meta-row"><span>8 inventions</span><span>Hover to awaken</span></div>
-        </div>
-        <div class="artwork">
-          <div class="frame-ornate">
-            <div class="frame-glass wide">
-              <img src="assets/room-paint-3.jpg" alt="Workshop painting" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ROOM 3: Studio -->
-      <section class="room" data-room="3">
-        <div class="room-wall"></div>
-        <div class="spotlight"></div>
-        <div class="room-copy">
-          <p class="room-kicker">画廊 · The Studio</p>
-          <h2 class="room-title">Gallery Wall</h2>
-          <p class="room-lede">Honours hung salon-style in lacquer light.</p>
-          <div class="room-body">
-            <div class="gallery-mini">
-              <figure><img src="assets/gallery-1.jpg" alt="" /></figure>
-              <figure><img src="assets/gallery-2.jpg" alt="" /></figure>
-              <figure><img src="assets/gallery-3.jpg" alt="" /></figure>
-              <figure><img src="assets/gallery-5.jpg" alt="" /></figure>
-            </div>
-            <p style="margin-top:.9rem"><strong>Prof. C N Rao Scholarship × 4</strong> · DELF B2 · Junior CTO Valedictorian · IIM Rohtak Innovation Finalist · Latin LID research · Quantum ViT paper in progress.</p>
-          </div>
-        </div>
-        <div class="artwork">
-          <div class="frame-ornate">
-            <div class="frame-glass">
-              <img src="assets/room-paint-4.jpg" alt="Studio painting" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ROOM 4: Parchment -->
-      <section class="room" data-room="4">
-        <div class="room-wall"></div>
-        <div class="spotlight"></div>
-        <div class="room-copy">
-          <p class="room-kicker">羊皮紙 · Reading Room</p>
-          <h2 class="room-title">Parchment</h2>
-          <p class="room-lede">Quiet notes written in iron ink on night silk.</p>
-          <div class="room-body">
-            <p><strong>Teaching Autosuggest to Listen</strong> — Vague queries are unfinished intent. GLiNER NER at MakeMyTrip reached micro F1 0.85 and now serves main-page autosuggest.</p>
-            <p><strong>Crops from Thirteen Bands</strong> — ISRO RRSC South: 10m, 13-band crop modelling with Streamlit maps.</p>
-            <p><strong>Attention, Entangled</strong> — Quantum circuits in Vision Transformer attention via Qiskit; paper unfolding.</p>
-          </div>
-          <div class="meta-row"><span>Essays</span><span>2024–2026</span></div>
-        </div>
-        <div class="artwork">
-          <div class="frame-ornate">
-            <div class="frame-glass">
-              <img src="assets/room-paint-5.jpg" alt="Reading room painting" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ROOM 5: Exit / Contact -->
-      <section class="room footer-room" data-room="5">
-        <div class="room-wall"></div>
-        <div class="spotlight"></div>
-        <div class="room-copy">
-          <p class="room-kicker">門 · The Threshold</p>
-          <h2 class="room-title">Leave a Mark</h2>
-          <p class="room-lede">「工を極めて、美を残す」— perfect the craft, leave beauty behind.</p>
-          <div class="room-body">
-            <p>The Digital Guild of Chinmayi remains open. Write, connect, or step back into the entrance hall.</p>
-            <div class="links">
-              <a href="mailto:chinmayirm.04@gmail.com">Email</a>
-              <a href="https://linkedin.com/in/chinmayi-r-m-a85455253/" target="_blank" rel="noopener">LinkedIn</a>
-              <a href="https://github.com/chinmayirm" target="_blank" rel="noopener">GitHub</a>
-            </div>
-          </div>
-          <a class="btn" href="#" data-room="0">Return to entrance</a>
-          <div class="meta-row"><span>© 2026</span><span>chinmayirm.github.io</span></div>
-        </div>
-        <div class="artwork">
-          <div class="frame-ornate">
-            <div class="frame-glass">
-              <img src="assets/room-paint-6.jpg" alt="Threshold painting" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="hud">
-        <span id="hudRoom">Room 01</span>
-        <div class="hud-bar"><i id="hudBar"></i></div>
-        <span id="hudHint">scroll to enter</span>
+        <div class="rail"><i id="rail"></i></div>
+        <div class="hint">scroll to enter</div>
       </div>
-      <div class="scroll-hint">scroll</div>
     </div>
-  </main>
+  </div>
 
   <script>
     (function () {
-      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
       const touch = matchMedia("(hover: none), (pointer: coarse)").matches;
       if (touch) document.body.classList.add("touch");
 
-      const journey = document.getElementById("journey");
-      const rooms = [...document.querySelectorAll(".room")];
-      const N = rooms.length;
-      const progressEl = document.getElementById("progress");
-      const hudRoom = document.getElementById("hudRoom");
-      const hudBar = document.getElementById("hudBar");
-      const hudHint = document.getElementById("hudHint");
-      const navLinks = document.getElementById("navLinks");
-      const navToggle = document.getElementById("navToggle");
+      const canvas = document.getElementById("world");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const copy = document.getElementById("copy");
+      const rail = document.getElementById("rail");
+      const loading = document.getElementById("loading");
+      const menu = document.getElementById("menu");
+      const menuBtn = document.getElementById("menuBtn");
 
-      const ROOM_NAMES = ["Entrance", "Codex", "Workshop", "Studio", "Parchment", "Threshold"];
+      const ROOMS = [
+        {
+          title: "Chinmayi R M",
+          kicker: "美術館 · Entrance",
+          lede: "The Digital Guild of Chinmayi",
+          body: "AI Engineer · NLP & Computer Vision · MakeMyTrip. Scroll forward — the frame becomes a corridor, and you enter the next chamber.",
+          meta: ["2026", "Entrance", "Portrait"],
+          painting: "assets/oriental-1.jpg",
+          focal: [0.5, 0.42],
+          cta: null
+        },
+        {
+          title: "The Codex",
+          kicker: "写本 · Resume",
+          lede: "A manuscript of craft at scale",
+          body: "MakeMyTrip Data Science: GLiNER NER on real-user traffic for autosuggest — micro F1 0.85, live on the main page. Jan–Aug 2026 internship; research paper. From Sep 2026: Software Engineer, Travelplex. Before: ISRO RRSC, CDSAML Quantum ViT, Tropes ML. PESU CSE AI&ML · GPA 8.97.",
+          meta: ["0.85 F1", "Travelplex", "PESU 8.97"],
+          painting: "assets/athens.jpg",
+          focal: [0.5, 0.38],
+          cta: null
+        },
+        {
+          title: "Workshop",
+          kicker: "工房 · Inventions",
+          lede: "Plans laid on the bench",
+          body: "GLiNER Autosuggest · Yoda Bot · Chroma Vision · ISRO crop models · Quantum ViT · Compression analysis · Airbnb EDA · Geopolitical RAG. Hover the work later — for now, walk the hall.",
+          meta: ["8 works", "NLP", "Vision"],
+          painting: "assets/oriental-2.jpg",
+          focal: [0.48, 0.4],
+          cta: null
+        },
+        {
+          title: "The Studio",
+          kicker: "画廊 · Honours",
+          lede: "Salon light on lacquer walls",
+          body: "Prof. C N Rao Scholarship × 4 · DELF B2 · Junior CTO Valedictorian · IIM Rohtak Innovation Finalist · Latin language ID research · Quantum ViT paper in progress.",
+          meta: ["Scholar", "DELF B2", "CTO"],
+          painting: "assets/socrates.jpg",
+          focal: [0.52, 0.4],
+          cta: null
+        },
+        {
+          title: "Parchment",
+          kicker: "羊皮紙 · Essays",
+          lede: "Ink notes from the guild",
+          body: "Teaching Autosuggest to Listen — vague queries as unfinished intent. Crops from Thirteen Bands — ISRO remote sensing. Attention, Entangled — quantum circuits in Vision Transformers.",
+          meta: ["Essays", "2024–26", "Ink"],
+          painting: "assets/oriental-3.jpg",
+          focal: [0.5, 0.45],
+          cta: null
+        },
+        {
+          title: "Threshold",
+          kicker: "門 · Contact",
+          lede: "Perfect the craft, leave beauty behind",
+          body: "The Digital Guild remains open. Email, LinkedIn, or GitHub — then scroll back to the entrance if you wish to walk the rooms again.",
+          meta: ["Email", "LinkedIn", "GitHub"],
+          painting: "assets/death-socrates.jpg",
+          focal: [0.5, 0.42],
+          cta: "mailto:chinmayirm.04@gmail.com"
+        }
+      ];
+
+      const images = [];
+      let W = 0, H = 0, dpr = 1;
+      let progress = 0;
+      let wallImg = null;
+
+      function loadImage(src) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = src;
+        });
+      }
+
+      function resize() {
+        dpr = Math.min(devicePixelRatio || 1, 2);
+        W = innerWidth;
+        H = innerHeight;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        canvas.style.width = W + "px";
+        canvas.style.height = H + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
 
       function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
       function lerp(a, b, t) { return a + (b - a) * t; }
       function easeInOut(t) {
-        return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+      function smoothstep(e0, e1, x) {
+        const t = clamp((x - e0) / (e1 - e0), 0, 1);
+        return t * t * (3 - 2 * t);
       }
 
-      function setRoomTransform(el, { opacity, z, scale, blur, brightness }) {
-        el.style.opacity = String(opacity);
-        el.style.filter = `blur(${blur}px) brightness(${brightness})`;
-        el.style.transform = `translate3d(0,0,${z}px) scale(${scale})`;
+      function drawCover(img, dx, dy, dw, dh, fx, fy, zoom) {
+        const iw = img.naturalWidth;
+        const ih = img.naturalHeight;
+        const scale = Math.max(dw / iw, dh / ih) * zoom;
+        const tw = iw * scale;
+        const th = ih * scale;
+        const ox = dx + (dw - tw) * fx;
+        const oy = dy + (dh - th) * fy;
+        ctx.drawImage(img, ox, oy, tw, th);
       }
 
-      function paint(global) {
-        const seg = 1 / N;
-        const raw = clamp(global, 0, 0.9999);
-        const idx = Math.min(N - 1, Math.floor(raw / seg));
+      function drawFrameRect(x, y, w, h, thickness) {
+        const g = ctx.createLinearGradient(x, y, x + w, y + h);
+        g.addColorStop(0, "#f0d78c");
+        g.addColorStop(0.3, "#8a7020");
+        g.addColorStop(0.55, "#e8c96a");
+        g.addColorStop(0.8, "#5c4a14");
+        g.addColorStop(1, "#d4af37");
+        ctx.fillStyle = g;
+        ctx.fillRect(x - thickness, y - thickness, w + thickness * 2, h + thickness * 2);
+        ctx.fillStyle = "#0a0806";
+        ctx.fillRect(x - 3, y - 3, w + 6, h + 6);
+      }
+
+      function drawSilhouettes() {
+        ctx.fillStyle = "#050505";
+        const base = H * 0.92;
+        const people = [
+          [W * 0.08, 0.95], [W * 0.16, 0.88], [W * 0.78, 1], [W * 0.88, 0.9]
+        ];
+        people.forEach(([x, s]) => {
+          const h = H * 0.22 * s;
+          ctx.beginPath();
+          ctx.ellipse(x, base + 8, 28 * s, 8 * s, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.moveTo(x - 16 * s, base);
+          ctx.lineTo(x - 14 * s, base - h * 0.55);
+          ctx.quadraticCurveTo(x, base - h * 0.62, x + 14 * s, base - h * 0.55);
+          ctx.lineTo(x + 16 * s, base);
+          ctx.closePath();
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(x, base - h * 0.68, 12 * s, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      function drawGallery(img, room, dive) {
+        // dive 0 = standing in room looking at frame
+        // dive 1 = frame fills screen / entering painting
+        const wallZoom = lerp(1.05, 1.35, dive);
+        if (wallImg) {
+          ctx.filter = "brightness(0.28) contrast(1.1) saturate(0.6)";
+          drawCover(wallImg, 0, 0, W, H, 0.5, 0.45, wallZoom);
+          ctx.filter = "none";
+        } else {
+          ctx.fillStyle = "#12100c";
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        // perspective floor
+        const floorGrad = ctx.createLinearGradient(0, H * 0.55, 0, H);
+        floorGrad.addColorStop(0, "rgba(5,5,5,0)");
+        floorGrad.addColorStop(0.35, "rgba(18,14,10,0.55)");
+        floorGrad.addColorStop(1, "#050505");
+        ctx.fillStyle = floorGrad;
+        ctx.fillRect(0, H * 0.55, W, H * 0.45);
+
+        // spotlight
+        const spot = ctx.createRadialGradient(W * 0.55, H * 0.38, 10, W * 0.55, H * 0.4, W * 0.55);
+        spot.addColorStop(0, "rgba(240,215,140,0.14)");
+        spot.addColorStop(1, "transparent");
+        ctx.fillStyle = spot;
+        ctx.fillRect(0, 0, W, H);
+
+        // framed painting geometry — grows toward fullscreen
+        const targetW = lerp(Math.min(W * 0.42, 520), W * 1.02, easeInOut(dive));
+        const targetH = lerp(Math.min(H * 0.62, 640), H * 1.02, easeInOut(dive));
+        const cx = lerp(W * 0.58, W * 0.5, dive);
+        const cy = lerp(H * 0.46, H * 0.5, dive);
+        const x = cx - targetW / 2;
+        const y = cy - targetH / 2;
+        const thick = lerp(14, 0, smoothstep(0.55, 0.9, dive));
+
+        if (thick > 0.5) drawFrameRect(x, y, targetW, targetH, thick);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(x, y, targetW, targetH);
+        ctx.clip();
+        const paintZoom = lerp(1.08, 1.45, dive);
+        drawCover(img, x, y, targetW, targetH, room.focal[0], room.focal[1], paintZoom);
+        ctx.restore();
+
+        // seal stamp when framed
+        if (dive < 0.7) {
+          ctx.globalAlpha = 1 - dive / 0.7;
+          ctx.fillStyle = "#c23b3c";
+          ctx.fillRect(x + targetW - 44, y + targetH - 44, 28, 28);
+          ctx.fillStyle = "#f3efe6";
+          ctx.font = "14px 'Noto Serif JP', serif";
+          ctx.fillText("印", x + targetW - 38, y + targetH - 24);
+          ctx.globalAlpha = 1;
+        }
+
+        if (dive < 0.85) {
+          ctx.globalAlpha = 1 - smoothstep(0.55, 0.85, dive);
+          drawSilhouettes();
+          ctx.globalAlpha = 1;
+        }
+
+        // vignette
+        const vig = ctx.createRadialGradient(W / 2, H / 2, W * 0.2, W / 2, H / 2, W * 0.85);
+        vig.addColorStop(0, "transparent");
+        vig.addColorStop(1, "rgba(0,0,0,0.55)");
+        ctx.fillStyle = vig;
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      function drawInside(img, room, fly) {
+        // fly through the painting toward focal vanishing point
+        const zoom = lerp(1.35, 8.5, easeInOut(fly));
+        drawCover(img, 0, 0, W, H, room.focal[0], room.focal[1], zoom);
+
+        // motion streak / tunnel feel
+        if (fly > 0.15) {
+          const blurAmt = smoothstep(0.15, 0.9, fly);
+          ctx.save();
+          ctx.globalAlpha = blurAmt * 0.35;
+          ctx.translate(W / 2, H / 2);
+          ctx.scale(1 + blurAmt * 0.08, 1 + blurAmt * 0.08);
+          ctx.translate(-W / 2, -H / 2);
+          drawCover(img, 0, 0, W, H, room.focal[0], room.focal[1], zoom * 1.05);
+          ctx.restore();
+          ctx.globalAlpha = 1;
+        }
+
+        // dark edges during high speed
+        const edge = ctx.createRadialGradient(W / 2, H / 2, W * 0.15, W / 2, H / 2, W * 0.75);
+        edge.addColorStop(0, "transparent");
+        edge.addColorStop(1, `rgba(0,0,0,${0.25 + fly * 0.55})`);
+        ctx.fillStyle = edge;
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      function updateCopy(roomIndex, phase, local) {
+        const room = ROOMS[roomIndex];
+        document.getElementById("kicker").textContent = room.kicker;
+        document.getElementById("title").textContent = room.title;
+        document.getElementById("lede").textContent = room.lede;
+        document.getElementById("body").textContent = room.body;
+        document.getElementById("metaA").textContent = room.meta[0];
+        document.getElementById("metaB").textContent = `Room ${String(roomIndex + 1).padStart(2, "0")} / 06`;
+        document.getElementById("metaC").textContent = room.meta[2];
+        const cta = document.getElementById("cta");
+        if (room.cta) {
+          cta.style.display = "inline-flex";
+          cta.href = room.cta;
+          cta.textContent = "Write to the guild";
+        } else {
+          cta.style.display = "none";
+        }
+
+        // hide copy while diving / flying
+        let opacity = 1;
+        let ty = 0;
+        if (phase === "dive") {
+          opacity = 1 - smoothstep(0.2, 0.55, local);
+          ty = local * 30;
+        } else if (phase === "fly") {
+          opacity = 0;
+          ty = 40;
+        } else if (phase === "arrive") {
+          opacity = smoothstep(0.35, 0.75, local);
+          ty = lerp(24, 0, opacity);
+        }
+        copy.style.opacity = String(opacity);
+        copy.style.transform = `translateY(${ty}px)`;
+
+        document.querySelectorAll("#menu a").forEach((a) => {
+          a.classList.toggle("active", Number(a.dataset.i) === roomIndex);
+        });
+      }
+
+      function render(p) {
+        const n = ROOMS.length;
+        const seg = 1 / n;
+        const raw = clamp(p, 0, 0.99999);
+        const idx = Math.min(n - 1, Math.floor(raw / seg));
         const local = (raw - idx * seg) / seg;
-        const t = easeInOut(local);
+        const room = ROOMS[idx];
+        const img = images[idx];
+        const next = images[Math.min(idx + 1, n - 1)];
+        const nextRoom = ROOMS[Math.min(idx + 1, n - 1)];
 
-        rooms.forEach((room, i) => {
-          room.classList.remove("active", "incoming");
-          const art = room.querySelector(".frame-glass img, .frame-glass .blank");
-          const copy = room.querySelector(".room-copy");
+        ctx.fillStyle = "#050505";
+        ctx.fillRect(0, 0, W, H);
 
-          if (i === idx) {
-            room.classList.add("active");
-            // dwell then zoom into the painting / through the doorway
-            const zoom = t < 0.28 ? 0 : (t - 0.28) / 0.72;
-            const z = lerp(0, 520, zoom);
-            const scale = lerp(1, 2.35, zoom);
-            const opacity = zoom > 0.78 ? lerp(1, 0, (zoom - 0.78) / 0.22) : 1;
-            const blur = zoom > 0.65 ? lerp(0, 6, (zoom - 0.65) / 0.35) : 0;
-            setRoomTransform(room, { opacity, z, scale, blur, brightness: lerp(1, 1.15, zoom) });
-            if (art) art.style.transform = `scale(${lerp(1, 1.25, zoom)})`;
-            if (copy) copy.style.opacity = zoom > 0.45 ? String(lerp(1, 0, (zoom - 0.45) / 0.35)) : "1";
-          } else if (i === idx + 1) {
-            room.classList.add("incoming");
-            // next room rushes toward you through the frame
-            const enter = t < 0.42 ? 0 : (t - 0.42) / 0.58;
-            const z = lerp(-780, 0, enter);
-            const scale = lerp(0.55, 1, enter);
-            const opacity = enter * enter;
-            const blur = lerp(10, 0, enter);
-            setRoomTransform(room, { opacity, z, scale, blur, brightness: lerp(0.7, 1, enter) });
-            if (art) art.style.transform = "scale(1)";
-            if (copy) copy.style.opacity = enter > 0.55 ? String(lerp(0, 1, (enter - 0.55) / 0.45)) : "0";
-          } else if (i < idx) {
-            setRoomTransform(room, { opacity: 0, z: 600, scale: 2.4, blur: 8, brightness: 1.2 });
-            if (copy) copy.style.opacity = "0";
-          } else {
-            setRoomTransform(room, { opacity: 0, z: -900, scale: 0.5, blur: 12, brightness: 0.6 });
-            if (copy) copy.style.opacity = "0";
+        // timeline inside each room segment:
+        // 0.00–0.28 settle gallery
+        // 0.28–0.55 dive into frame
+        // 0.55–0.82 fly through painting
+        // 0.82–1.00 arrive next gallery (or hold last)
+        let phase = "settle";
+        let t = 0;
+
+        if (local < 0.28) {
+          phase = "settle";
+          t = local / 0.28;
+          drawGallery(img, room, 0);
+        } else if (local < 0.55) {
+          phase = "dive";
+          t = (local - 0.28) / 0.27;
+          drawGallery(img, room, easeInOut(t));
+        } else if (local < 0.82) {
+          phase = "fly";
+          t = (local - 0.55) / 0.27;
+          drawInside(img, room, easeInOut(t));
+          // blend next room early
+          if (idx < n - 1 && t > 0.55) {
+            const a = smoothstep(0.55, 1, t);
+            ctx.globalAlpha = a;
+            drawGallery(next, nextRoom, lerp(0.85, 0.15, a));
+            ctx.globalAlpha = 1;
           }
-        });
+        } else {
+          phase = "arrive";
+          t = (local - 0.82) / 0.18;
+          if (idx < n - 1) {
+            // finish morph into next gallery
+            ctx.globalAlpha = 1;
+            drawGallery(next, nextRoom, lerp(0.15, 0, easeInOut(t)));
+          } else {
+            drawGallery(img, room, 0);
+          }
+        }
 
-        const roomLabel = String(idx + 1).padStart(2, "0");
-        hudRoom.textContent = `Room ${roomLabel} · ${ROOM_NAMES[idx]}`;
-        hudBar.style.width = `${(local * 100).toFixed(1)}%`;
-        hudHint.textContent = local > 0.35 ? "entering next room" : "scroll to enter";
-        progressEl.style.width = `${(global * 100).toFixed(2)}%`;
-
-        navLinks.querySelectorAll("a").forEach((a) => {
-          a.classList.toggle("active", Number(a.dataset.room) === idx);
-        });
+        updateCopy(idx, phase, t);
+        rail.style.width = (local * 100).toFixed(2) + "%";
       }
 
-      function scrollProgress() {
-        const max = journey.offsetHeight - innerHeight;
+      function scrollP() {
+        const track = document.getElementById("scroll-track");
+        const max = track.offsetHeight - innerHeight;
         return max > 0 ? clamp(scrollY / max, 0, 1) : 0;
       }
 
@@ -695,32 +677,27 @@
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
-          paint(scrollProgress());
+          progress = scrollP();
+          render(progress);
           ticking = false;
         });
       }
 
-      function goToRoom(i) {
-        const max = journey.offsetHeight - innerHeight;
-        const target = ((i + 0.08) / N) * max;
-        scrollTo({ top: target, behavior: reduce ? "auto" : "smooth" });
+      function goRoom(i) {
+        const track = document.getElementById("scroll-track");
+        const max = track.offsetHeight - innerHeight;
+        scrollTo({ top: ((i + 0.02) / ROOMS.length) * max, behavior: "smooth" });
+        menu.classList.remove("open");
       }
 
-      navToggle.addEventListener("click", () => {
-        navLinks.classList.toggle("open");
-        navToggle.textContent = navLinks.classList.contains("open") ? "Close" : "Menu";
-      });
-
-      document.querySelectorAll("[data-room]").forEach((el) => {
-        el.addEventListener("click", (e) => {
+      menuBtn.addEventListener("click", () => menu.classList.toggle("open"));
+      menu.querySelectorAll("a").forEach((a) => {
+        a.addEventListener("click", (e) => {
           e.preventDefault();
-          goToRoom(Number(el.dataset.room));
-          navLinks.classList.remove("open");
-          navToggle.textContent = "Menu";
+          goRoom(Number(a.dataset.i));
         });
       });
 
-      /* cursor */
       if (!touch) {
         const cur = document.getElementById("cursor");
         const dot = document.getElementById("cursorDot");
@@ -731,25 +708,31 @@
           dot.style.top = dy + "px";
         }, { passive: true });
         (function follow() {
-          cx += (dx - cx) * 0.18;
-          cy += (dy - cy) * 0.18;
+          cx += (dx - cx) * 0.2;
+          cy += (dy - cy) * 0.2;
           cur.style.left = cx + "px";
           cur.style.top = cy + "px";
           requestAnimationFrame(follow);
         })();
-        document.querySelectorAll("a, button, .proj-card, .gallery-mini figure").forEach((el) => {
-          el.addEventListener("mouseenter", () => cur.classList.add("hover"));
-          el.addEventListener("mouseleave", () => cur.classList.remove("hover"));
-        });
       }
 
-      addEventListener("scroll", onScroll, { passive: true });
-      addEventListener("resize", onScroll, { passive: true });
-      paint(0);
+      Promise.all([
+        loadImage("assets/room-stone.jpg").catch(() => loadImage("assets/gallery-wall.jpg")),
+        ...ROOMS.map((r) => loadImage(r.painting))
+      ]).then(([wall, ...imgs]) => {
+        wallImg = wall;
+        imgs.forEach((img, i) => { images[i] = img; });
+        resize();
+        render(0);
+        loading.classList.add("hide");
+        setTimeout(() => loading.remove(), 700);
+      }).catch((err) => {
+        console.error(err);
+        loading.querySelector("p").textContent = "Could not load gallery assets.";
+      });
 
-      /* preload paintings so zooms stay sharp */
-      ["assets/room-stone.jpg","assets/room-paint-2.jpg","assets/room-paint-3.jpg","assets/room-paint-4.jpg","assets/room-paint-5.jpg","assets/room-paint-6.jpg"]
-        .forEach((src) => { const i = new Image(); i.src = src; });
+      addEventListener("scroll", onScroll, { passive: true });
+      addEventListener("resize", () => { resize(); render(scrollP()); }, { passive: true });
     })();
   </script>
 </body>
