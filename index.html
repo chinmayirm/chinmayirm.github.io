@@ -4,1692 +4,732 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chinmayi R M — The Digital Guild</title>
-  <meta name="description" content="The Digital Guild of Chinmayi R M — dark oriental museum portfolio." />
+  <meta name="description" content="Walk the Digital Guild — a dark oriental museum. Scroll to enter each room." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+JP:wght@300;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+JP:wght@300;500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #070605;
-      --ink: #0e0b09;
-      --panel: rgba(18, 14, 12, 0.72);
-      --panel-solid: #14100e;
-      --lacquer: #7a1f1f;
-      --vermillion: #c23b3c;
+      --bg: #050403;
+      --ink: #0c0a08;
       --gold: #d4af37;
       --gold-bright: #f0d78c;
-      --gold-dim: #8a7028;
+      --vermillion: #c23b3c;
       --silk: #efe6d6;
-      --muted: rgba(239, 230, 214, 0.62);
+      --muted: rgba(239, 230, 214, 0.68);
       --line: rgba(212, 175, 55, 0.28);
-      --jade: #3d6b58;
-      --wood: #1c140f;
-      --sepia: sepia(0.8) saturate(0.45) brightness(0.78);
-      --radius: 2px;
+      --panel: rgba(10, 8, 6, 0.72);
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--gold) var(--bg); }
-
+    html { scrollbar-width: thin; scrollbar-color: var(--gold) var(--bg); }
     body {
       font-family: "EB Garamond", "Noto Serif JP", Georgia, serif;
-      color: var(--silk);
       background: var(--bg);
+      color: var(--silk);
       overflow-x: hidden;
-      line-height: 1.65;
+      line-height: 1.55;
       cursor: none;
     }
-
     body.touch { cursor: auto; }
-    body.touch .cursor,
-    body.touch .cursor-dot { display: none !important; }
-
-    img { display: block; max-width: 100%; height: auto; }
+    body.touch .cursor, body.touch .cursor-dot { display: none !important; }
+    img { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
-    button { font: inherit; }
+    button { font: inherit; background: none; border: none; color: inherit; cursor: none; }
 
-    /* —— Dynamic wallpaper —— */
-    #wallpaper {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(122, 31, 31, 0.22), transparent 55%),
-        radial-gradient(ellipse 60% 40% at 85% 70%, rgba(61, 107, 88, 0.12), transparent 50%),
-        radial-gradient(ellipse 50% 60% at 50% 100%, rgba(212, 175, 55, 0.06), transparent 45%),
-        #070605;
-    }
-
-    #wallpaper canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      opacity: 0.95;
-    }
-
-    .wallpaper-veil {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='45' viewBox='0 0 90 45'%3E%3Cg fill='none' stroke='%23d4af37' stroke-opacity='0.05' stroke-width='1'%3E%3Cpath d='M0 45c12 0 22-11 22-22S12 0 0 0'/%3E%3Cpath d='M22 45c12 0 23-11 23-22S34 0 22 0'/%3E%3Cpath d='M45 45c12 0 22-11 22-22S57 0 45 0'/%3E%3Cpath d='M67 45c12 0 23-11 23-22S79 0 67 0'/%3E%3Cpath d='M90 45c12 0 22-11 22-22S102 0 90 0'/%3E%3C/g%3E%3C/svg%3E"),
-        linear-gradient(180deg, rgba(7, 6, 5, 0.15), rgba(7, 6, 5, 0.55));
-      mix-blend-mode: soft-light;
-    }
-
-    .page { position: relative; z-index: 2; }
-
-    /* —— Custom cursor —— */
     .cursor {
-      position: fixed;
-      width: 36px;
-      height: 36px;
-      border: 1px solid rgba(212, 175, 55, 0.55);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width 0.25s var(--ease), height 0.25s var(--ease), border-color 0.25s, background 0.25s;
-      mix-blend-mode: difference;
+      position: fixed; width: 34px; height: 34px; border: 1px solid rgba(212,175,55,.55);
+      border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%);
+      transition: width .25s, height .25s, background .25s; mix-blend-mode: difference;
     }
-
+    .cursor.hover { width: 54px; height: 54px; background: rgba(212,175,55,.08); }
     .cursor-dot {
-      position: fixed;
-      width: 5px;
-      height: 5px;
-      background: var(--gold-bright);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 10000;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 12px rgba(240, 215, 140, 0.7);
+      position: fixed; width: 4px; height: 4px; background: var(--gold-bright); border-radius: 50%;
+      pointer-events: none; z-index: 10000; transform: translate(-50%,-50%);
+      box-shadow: 0 0 10px rgba(240,215,140,.7);
     }
 
-    .cursor.hover {
-      width: 58px;
-      height: 58px;
-      border-color: var(--gold-bright);
-      background: rgba(212, 175, 55, 0.08);
+    .progress {
+      position: fixed; top: 0; left: 0; height: 2px; width: 0; z-index: 200;
+      background: linear-gradient(90deg, var(--vermillion), var(--gold), var(--gold-bright));
+      box-shadow: 0 0 12px rgba(212,175,55,.5); pointer-events: none;
     }
 
-    /* —— Nav —— */
     .nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.1rem 2.25rem;
-      transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
-      border-bottom: 1px solid transparent;
+      position: fixed; inset: 0 0 auto; z-index: 150;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.75rem;
+      background: linear-gradient(180deg, rgba(5,4,3,.85), transparent);
+      pointer-events: none;
     }
-
-    .nav.scrolled {
-      background: rgba(7, 6, 5, 0.78);
-      backdrop-filter: blur(16px) saturate(1.2);
-      border-bottom-color: var(--line);
-    }
-
+    .nav a, .nav button { pointer-events: auto; }
     .nav-brand {
-      font-family: "Cinzel Decorative", serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.22em;
-      color: var(--gold);
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
+      font-family: "Cinzel Decorative", serif; font-size: .75rem; letter-spacing: .22em;
+      color: var(--gold); text-transform: uppercase; display: flex; align-items: center; gap: .55rem;
     }
-
-    .nav-brand .seal-mark {
-      width: 22px;
-      height: 22px;
-      display: grid;
-      place-items: center;
-      background: var(--vermillion);
-      color: var(--silk);
-      font-family: "Noto Serif JP", serif;
-      font-size: 0.7rem;
-      box-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+    .seal {
+      width: 22px; height: 22px; display: grid; place-items: center;
+      background: var(--vermillion); color: var(--silk);
+      font-family: "Noto Serif JP", serif; font-size: .7rem;
     }
-
     .nav-links {
-      display: flex;
-      gap: 1.6rem;
-      list-style: none;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.05rem;
-      letter-spacing: 0.06em;
+      display: flex; gap: 1.1rem; list-style: none;
+      font-family: "Cormorant Garamond", serif; font-size: 1rem; letter-spacing: .05em;
     }
-
-    .nav-links a {
-      color: var(--muted);
-      position: relative;
-      transition: color 0.25s;
-    }
-
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: -5px;
-      width: 0;
-      height: 1px;
-      background: var(--gold);
-      transition: width 0.35s var(--ease), left 0.35s var(--ease);
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active { color: var(--gold-bright); }
-    .nav-links a:hover::after,
-    .nav-links a.active::after { width: 100%; left: 0; }
-
+    .nav-links a { color: var(--muted); transition: color .25s; }
+    .nav-links a.active, .nav-links a:hover { color: var(--gold-bright); }
     .nav-toggle {
-      display: none;
-      background: transparent;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      padding: 0.4rem 0.75rem;
-      letter-spacing: 0.1em;
-      cursor: none;
+      display: none; border: 1px solid var(--gold); color: var(--gold);
+      padding: .35rem .7rem; letter-spacing: .1em;
     }
 
-    /* —— Shared section chrome —— */
-    .section {
+    /* —— Museum journey —— */
+    #journey {
       position: relative;
-      padding: clamp(4.5rem, 10vh, 7rem) 0;
+      height: calc(var(--rooms, 6) * 170vh);
     }
 
-    .section-label {
-      font-family: "Noto Serif JP", serif;
-      font-weight: 300;
-      font-size: 0.72rem;
-      letter-spacing: 0.38em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-    }
-
-    .section-label::before,
-    .section-label::after {
-      content: "◆";
-      font-size: 0.45rem;
-      opacity: 0.65;
-    }
-
-    .section-title {
-      font-family: "Cinzel Decorative", serif;
-      font-size: clamp(1.9rem, 4vw, 3rem);
-      color: var(--gold-bright);
-      font-weight: 700;
-      line-height: 1.15;
-      margin-bottom: 0.55rem;
-    }
-
-    .section-lede {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.2rem;
-      color: var(--muted);
-      max-width: 34rem;
-      font-style: italic;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.95s var(--ease), transform 0.95s var(--ease);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .glass {
-      background: var(--panel);
-      backdrop-filter: blur(18px) saturate(1.15);
-      border: 1px solid var(--line);
-      box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.45),
-        inset 0 1px 0 rgba(240, 215, 140, 0.06);
-    }
-
-    /* =========================
-       HERO
-       ========================= */
-    #home {
-      min-height: 100vh;
-      min-height: 100dvh;
-      display: grid;
-      grid-template-columns: 1fr 1.05fr;
-      align-items: center;
-      padding: 6.5rem 4vw 4rem;
-      gap: 2rem;
-    }
-
-    .portrait-stage {
-      display: flex;
-      justify-content: center;
-      perspective: 1000px;
-    }
-
-    .portrait-frame {
-      position: relative;
-      width: min(360px, 78vw);
-      aspect-ratio: 3 / 4;
-      padding: 12px;
-      background: linear-gradient(145deg, #e0c05a, #8a7020 30%, #f0d78c 50%, #5c4a14 78%, #d4af37);
-      box-shadow:
-        0 0 0 2px #0a0806,
-        0 0 40px rgba(212, 175, 55, 0.18),
-        0 30px 70px rgba(0, 0, 0, 0.65);
-      transform-style: preserve-3d;
-      transition: transform 0.45s var(--ease);
-      animation: framePulse 5s ease-in-out infinite;
-    }
-
-    @keyframes framePulse {
-      0%, 100% { box-shadow: 0 0 0 2px #0a0806, 0 0 30px rgba(212, 175, 55, 0.12), 0 30px 70px rgba(0,0,0,0.65); }
-      50% { box-shadow: 0 0 0 2px #0a0806, 0 0 55px rgba(212, 175, 55, 0.28), 0 30px 70px rgba(0,0,0,0.65); }
-    }
-
-    .portrait-frame::after {
-      content: "印";
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      z-index: 3;
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      background: var(--vermillion);
-      color: var(--silk);
-      font-family: "Noto Serif JP", serif;
-      font-size: 0.95rem;
-      box-shadow: 2px 2px 0 rgba(0,0,0,0.45);
-    }
-
-    .portrait-inner {
-      width: 100%;
-      height: 100%;
-      background: #0a0806;
-      border: 3px solid #0a0806;
+    .stage {
+      position: sticky; top: 0;
+      height: 100vh; height: 100dvh;
       overflow: hidden;
+      perspective: 1400px;
+      perspective-origin: 50% 45%;
     }
 
-    .portrait-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.7rem;
+    .stage-fog {
+      position: absolute; inset: 0; z-index: 8; pointer-events: none;
       background:
-        repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(212,175,55,0.04) 14px, rgba(212,175,55,0.04) 15px),
-        #12100c;
-      border: 1px dashed rgba(212, 175, 55, 0.4);
+        radial-gradient(ellipse at center, transparent 35%, rgba(5,4,3,.55) 100%),
+        linear-gradient(180deg, rgba(5,4,3,.35), transparent 18%, transparent 72%, rgba(5,4,3,.75));
     }
 
-    .portrait-placeholder span {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.05rem;
-      letter-spacing: 0.14em;
-      color: rgba(212, 175, 55, 0.7);
+    .floor {
+      position: absolute; left: -10%; right: -10%; bottom: -5%; height: 42%;
+      z-index: 2; pointer-events: none;
+      background:
+        linear-gradient(180deg, transparent, rgba(5,4,3,.35) 20%, rgba(12,10,8,.92)),
+        repeating-linear-gradient(90deg, rgba(212,175,55,.04) 0 2px, transparent 2px 48px),
+        linear-gradient(180deg, #1a1510, #0a0806);
+      transform: rotateX(72deg);
+      transform-origin: center top;
+      opacity: .9;
     }
 
-    .portrait-placeholder small {
+    .silhouettes {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 28vh;
+      z-index: 9; pointer-events: none;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cg fill='%23050303'%3E%3Cellipse cx='90' cy='200' rx='40' ry='12'/%3E%3Cpath d='M70 200v-70c0-18 12-28 28-28s28 10 28 28v70'/%3E%3Ccircle cx='98' cy='88' r='16'/%3E%3Cellipse cx='230' cy='200' rx='36' ry='10'/%3E%3Cpath d='M210 200v-78c0-16 14-26 26-26s22 10 22 26v78'/%3E%3Ccircle cx='236' cy='82' r='14'/%3E%3Cellipse cx='980' cy='200' rx='42' ry='12'/%3E%3Cpath d='M958 200v-74c0-18 14-30 30-30s30 12 30 30v74'/%3E%3Ccircle cx='988' cy='82' r='17'/%3E%3Cellipse cx='1100' cy='200' rx='34' ry='10'/%3E%3Cpath d='M1080 200v-66c0-14 12-24 24-24s22 10 22 24v66'/%3E%3Ccircle cx='1104' cy='96' r='13'/%3E%3C/g%3E%3C/svg%3E") bottom/100% 100% no-repeat;
+      opacity: .92;
+      filter: blur(0.2px);
+    }
+
+    .room {
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) 1.2fr;
+      align-items: center;
+      gap: clamp(1rem, 3vw, 3rem);
+      padding: 5.5rem clamp(1.2rem, 4vw, 4rem) 4rem;
+      transform-style: preserve-3d;
+      will-change: transform, opacity, filter;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .room.active { pointer-events: auto; z-index: 5; }
+    .room.incoming { z-index: 6; }
+
+    .room-wall {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        linear-gradient(90deg, rgba(5,4,3,.72), rgba(5,4,3,.25) 40%, rgba(5,4,3,.55)),
+        url("assets/room-stone.jpg") center/cover;
+      filter: brightness(.35) contrast(1.15) saturate(.7);
+      transform: translateZ(-200px) scale(1.25);
+    }
+
+    .room-copy {
+      position: relative; z-index: 3;
+      max-width: 420px;
+      transform: translateZ(40px);
+    }
+
+    .room-kicker {
       font-family: "Noto Serif JP", serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.22em;
-      color: rgba(239, 230, 214, 0.3);
-      text-transform: uppercase;
+      font-size: .68rem; letter-spacing: .36em; color: var(--gold);
+      text-transform: uppercase; margin-bottom: .85rem;
     }
 
-    .hero-copy { max-width: 540px; animation: rise 1.1s var(--ease) 0.1s both; }
-
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(32px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-kicker {
-      font-family: "Noto Serif JP", serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.42em;
-      color: var(--gold);
-      margin-bottom: 1.15rem;
-      text-transform: uppercase;
-    }
-
-    .hero-name {
+    .room-title {
       font-family: "Cinzel Decorative", serif;
-      font-weight: 900;
-      font-size: clamp(2.5rem, 5.8vw, 4.4rem);
-      line-height: 1.02;
-      color: var(--silk);
-      text-shadow: 0 8px 40px rgba(0,0,0,0.55);
-      margin-bottom: 0.7rem;
+      font-size: clamp(2rem, 4.5vw, 3.6rem);
+      line-height: 1.05; color: var(--silk);
+      text-shadow: 0 10px 40px rgba(0,0,0,.65);
+      margin-bottom: .7rem;
     }
 
-    .hero-name span {
-      display: block;
-      margin-top: 0.7rem;
+    .room-lede {
       font-family: "Cormorant Garamond", serif;
-      font-weight: 400;
-      font-style: italic;
-      font-size: 0.38em;
-      letter-spacing: 0.1em;
-      color: var(--gold-bright);
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      font-style: italic; color: var(--muted);
+      margin-bottom: 1.25rem; max-width: 34ch;
     }
 
-    .hero-title {
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(1.1rem, 2vw, 1.4rem);
-      color: var(--muted);
-      margin-bottom: 2rem;
-      border-left: 2px solid var(--gold);
-      padding-left: 1rem;
+    .room-body {
+      font-size: 1.02rem; color: rgba(239,230,214,.82);
+      margin-bottom: 1.2rem; max-height: 38vh; overflow: auto;
+      padding-right: .35rem; scrollbar-width: thin;
+    }
+    .room-body p + p { margin-top: .75rem; }
+    .room-body strong { color: var(--gold-bright); font-weight: 600; }
+
+    .drop::first-letter {
+      float: left; font-family: "Cinzel Decorative", serif;
+      font-size: 3.2rem; line-height: .8; padding: .1rem .45rem 0 0;
+      color: var(--vermillion);
     }
 
-    .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.85rem; }
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: .7rem 1.1rem;
+      font-family: "Noto Serif JP", serif; font-size: .68rem;
+      letter-spacing: .14em; color: rgba(212,175,55,.7);
+      margin-top: 1rem; text-transform: uppercase;
+    }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.9rem 1.55rem;
+      display: inline-flex; align-items: center; gap: .4rem;
+      margin-top: .35rem; padding: .75rem 1.25rem;
+      font-family: "Cormorant Garamond", serif; font-size: 1rem; letter-spacing: .08em;
+      border: 1px solid rgba(239,230,214,.85); color: var(--silk);
+      transition: background .3s, color .3s, transform .3s;
+    }
+    .btn:hover { background: var(--silk); color: #0c0a08; transform: translateY(-2px); }
+    .btn-gold { background: var(--gold); color: #0c0a08; border-color: var(--gold); }
+    .btn-gold:hover { background: var(--gold-bright); }
+
+    .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .9rem; }
+    .chip {
+      font-size: .78rem; padding: .25rem .55rem;
+      border: 1px solid rgba(61,107,88,.5); color: #9fceb8;
       font-family: "Cormorant Garamond", serif;
-      font-size: 1.05rem;
-      letter-spacing: 0.08em;
-      border: 1px solid var(--gold);
-      transition: transform 0.3s var(--ease), background 0.3s, color 0.3s, box-shadow 0.3s;
-      position: relative;
-      overflow: hidden;
     }
 
-    .btn::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
-      transform: translateX(-120%);
-      transition: transform 0.6s var(--ease);
+    .timeline { list-style: none; margin-top: .4rem; }
+    .timeline li {
+      position: relative; padding: .55rem 0 .55rem 1.1rem;
+      border-left: 1px solid rgba(212,175,55,.25);
     }
-
-    .btn:hover::before { transform: translateX(120%); }
-
-    .btn-gold {
-      background: var(--gold);
-      color: #0e0b09;
-      box-shadow: 0 8px 28px rgba(212, 175, 55, 0.25);
-    }
-
-    .btn-gold:hover {
-      background: var(--gold-bright);
-      transform: translateY(-3px);
-      box-shadow: 0 14px 36px rgba(212, 175, 55, 0.35);
-    }
-
-    .btn-ghost {
-      background: rgba(212, 175, 55, 0.05);
-      color: var(--gold);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(212, 175, 55, 0.14);
-      transform: translateY(-3px);
-    }
-
-    .scroll-cue {
-      position: absolute;
-      bottom: 1.6rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: "Noto Serif JP", serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.35em;
-      color: rgba(212, 175, 55, 0.55);
-      animation: bob 2.4s ease-in-out infinite;
-    }
-
-    @keyframes bob {
-      0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
-      50% { opacity: 1; transform: translateX(-50%) translateY(8px); }
-    }
-
-    /* =========================
-       CODEX
-       ========================= */
-    #codex .codex-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 1.75rem;
-    }
-
-    .codex-header { text-align: center; margin-bottom: 3rem; }
-    .codex-header .section-label { justify-content: center; }
-    .codex-header .section-lede { margin: 0.7rem auto 0; }
-
-    .codex-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.75rem;
-      align-items: start;
-    }
-
-    .manuscript-panel {
-      padding: 2.15rem 2rem;
-      position: relative;
-      transition: transform 0.4s var(--ease), border-color 0.4s;
-    }
-
-    .manuscript-panel:hover {
-      border-color: rgba(212, 175, 55, 0.5);
-      transform: translateY(-4px);
-    }
-
-    .manuscript-panel::before {
-      content: "";
-      position: absolute;
-      inset: 8px;
-      border: 1px solid rgba(194, 59, 60, 0.18);
-      pointer-events: none;
-    }
-
-    .drop-cap::first-letter {
-      float: left;
-      font-family: "Cinzel Decorative", serif;
-      font-size: 3.8rem;
-      line-height: 0.8;
-      padding: 0.12rem 0.5rem 0 0;
-      color: var(--vermillion);
-      font-weight: 700;
-    }
-
-    .bio p { font-size: 1.08rem; margin-bottom: 1rem; color: rgba(239, 230, 214, 0.88); }
-
-    .seal-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.35rem; }
-
-    .seal {
-      font-family: "Noto Serif JP", serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      padding: 0.35rem 0.65rem;
-      border: 1px solid rgba(194, 59, 60, 0.55);
-      color: #e07070;
-      transition: background 0.25s, color 0.25s;
-    }
-
-    .seal:hover { background: var(--vermillion); color: var(--silk); }
-
-    .timeline-title {
-      font-family: "Cinzel Decorative", serif;
-      font-size: 1.2rem;
-      color: var(--gold-bright);
-      margin-bottom: 1.35rem;
-      padding-bottom: 0.7rem;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .timeline { list-style: none; position: relative; }
-
-    .timeline::before {
-      content: "";
-      position: absolute;
-      left: 0.3rem;
-      top: 0.35rem;
-      bottom: 0.35rem;
-      width: 1px;
-      background: linear-gradient(180deg, var(--gold), transparent);
-    }
-
-    .timeline-item {
-      position: relative;
-      padding: 0 0 1.5rem 1.65rem;
-      cursor: pointer;
-      transition: opacity 0.3s;
-    }
-
-    .timeline-item:last-child { padding-bottom: 0; }
-
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.45rem;
-      width: 9px;
-      height: 9px;
-      background: var(--gold);
-      border: 2px solid var(--bg);
-      border-radius: 50%;
-      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .timeline-item:hover::before,
-    .timeline-item.open::before {
-      transform: scale(1.35);
-      box-shadow: 0 0 0 5px rgba(212, 175, 55, 0.28), 0 0 16px rgba(212, 175, 55, 0.45);
-    }
-
-    .tl-role {
-      font-family: "Cormorant Garamond", serif;
-      font-weight: 700;
-      font-size: 1.15rem;
-      color: var(--silk);
-    }
-
-    .tl-org { color: #e07070; font-style: italic; font-size: 1rem; }
-
-    .tl-dates {
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      color: var(--gold-dim);
-      text-transform: uppercase;
-      margin: 0.25rem 0 0.45rem;
-      font-family: "Noto Serif JP", serif;
-    }
-
-    .tl-body {
-      font-size: 0.98rem;
-      color: var(--muted);
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: max-height 0.45s var(--ease), opacity 0.35s, margin 0.35s;
-    }
-
-    .timeline-item.open .tl-body,
-    .timeline-item:hover .tl-body {
-      max-height: 220px;
-      opacity: 1;
-      margin-top: 0.35rem;
-    }
-
-    .edu-block {
-      margin-top: 1.75rem;
-      padding-top: 1.15rem;
-      border-top: 1px solid var(--line);
-    }
-
-    .edu-block p { color: var(--muted); font-size: 0.98rem; }
-
-    .skills-cloud { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.9rem; }
-
-    .skill-chip {
-      font-size: 0.82rem;
-      padding: 0.28rem 0.58rem;
-      border: 1px solid rgba(61, 107, 88, 0.45);
-      color: #8fbfa8;
-      font-family: "Cormorant Garamond", serif;
-      transition: background 0.25s, transform 0.25s;
-    }
-
-    .skill-chip:hover {
-      background: rgba(61, 107, 88, 0.25);
-      transform: translateY(-2px);
-    }
-
-    /* =========================
-       WORKSHOP
-       ========================= */
-    .workshop-header {
-      max-width: 1120px;
-      margin: 0 auto 1.5rem;
-      padding: 0 1.75rem;
-    }
-
-    .conveyor-bar {
-      max-width: 1120px;
-      margin: 0 auto 0.85rem;
-      padding: 0 1.75rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .conveyor-hint {
-      font-family: "Noto Serif JP", serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.22em;
-      color: rgba(212, 175, 55, 0.45);
-    }
-
-    .conveyor-nav { display: flex; gap: 0.5rem; }
-
-    .c-btn {
-      width: 40px;
-      height: 40px;
-      border: 1px solid var(--line);
-      background: rgba(18, 14, 12, 0.7);
-      color: var(--gold);
-      display: grid;
-      place-items: center;
-      transition: background 0.25s, border-color 0.25s, transform 0.25s;
-      cursor: none;
-    }
-
-    .c-btn:hover {
-      background: rgba(212, 175, 55, 0.12);
-      border-color: var(--gold);
-      transform: scale(1.05);
-    }
-
-    .conveyor {
-      display: flex;
-      gap: 1.4rem;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      padding: 0.5rem 1.75rem 2rem;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .conveyor::-webkit-scrollbar { display: none; }
-
-    .invention {
-      flex: 0 0 min(320px, 80vw);
-      scroll-snap-align: center;
-      background: linear-gradient(165deg, #221810, #140f0c 60%, #0e0b09);
-      border: 2px solid var(--gold-dim);
-      overflow: hidden;
-      transition: transform 0.4s var(--ease), border-color 0.4s, box-shadow 0.4s;
-      box-shadow: inset 0 0 0 1px rgba(240, 215, 140, 0.08);
-    }
-
-    .invention:hover {
-      transform: translateY(-8px) scale(1.015);
-      border-color: var(--gold);
-      box-shadow: 0 22px 50px rgba(0,0,0,0.55), 0 0 30px rgba(212, 175, 55, 0.12);
-    }
-
-    .invention-preview {
-      aspect-ratio: 16 / 11;
-      overflow: hidden;
-      border-bottom: 1px solid var(--gold-dim);
+    .timeline li::before {
+      content: ""; position: absolute; left: -4px; top: .95rem;
+      width: 7px; height: 7px; border-radius: 50%; background: var(--gold);
     }
-
-    .invention-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: var(--sepia);
-      transition: filter 0.55s, transform 0.55s;
-    }
-
-    .invention:hover .invention-preview img {
-      filter: none;
-      transform: scale(1.06);
-    }
-
-    .invention-body { padding: 1.2rem 1.25rem 1.4rem; }
-
-    .invention-tag {
-      font-family: "Noto Serif JP", serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.22em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    .invention-name {
-      font-family: "Cinzel Decorative", serif;
-      font-size: 1.05rem;
-      color: var(--silk);
-      margin-bottom: 0.45rem;
-      line-height: 1.3;
-    }
-
-    .invention-desc {
-      font-size: 0.95rem;
-      color: var(--muted);
-      margin-bottom: 0.85rem;
-    }
-
-    .invention-link {
-      font-family: "Cormorant Garamond", serif;
-      color: var(--gold-bright);
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.25s;
-    }
-
-    .invention-link:hover { border-bottom-color: var(--gold); }
-
-    /* =========================
-       STUDIO
-       ========================= */
-    .studio-header {
-      max-width: 1120px;
-      margin: 0 auto 2.5rem;
-      padding: 0 1.75rem;
-      text-align: center;
-    }
-
-    .studio-header .section-label { justify-content: center; }
-    .studio-header .section-lede { margin: 0.7rem auto 0; }
-
-    .salon-wall {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 1.4rem;
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-auto-rows: 130px;
-      gap: 1.1rem;
-    }
-
-    .frame {
-      position: relative;
-      overflow: hidden;
-      box-shadow:
-        0 0 0 3px #0a0806,
-        0 0 0 10px #d4af37,
-        0 18px 40px rgba(0,0,0,0.65);
-      transition: transform 0.45s var(--ease), box-shadow 0.45s;
-      cursor: none;
-    }
-
-    .frame:hover {
-      transform: translateY(-6px) scale(1.015);
-      box-shadow:
-        0 0 0 3px #0a0806,
-        0 0 0 10px #f0d78c,
-        0 28px 55px rgba(0,0,0,0.7),
-        0 0 40px rgba(212, 175, 55, 0.2);
-      z-index: 2;
-    }
-
-    .frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.85) contrast(1.08) saturate(0.85);
-      transition: filter 0.45s, transform 0.55s;
-    }
-
-    .frame:hover img {
-      filter: brightness(1) contrast(1.05) saturate(1);
-      transform: scale(1.05);
-    }
-
-    .frame figcaption {
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      padding: 2rem 0.85rem 0.7rem;
-      background: linear-gradient(transparent, rgba(7,6,5,0.92));
-      font-family: "Cormorant Garamond", serif;
-      font-size: 0.95rem;
-      color: var(--gold-bright);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.35s, transform 0.35s;
-    }
-
-    .frame:hover figcaption { opacity: 1; transform: translateY(0); }
-
-    .f1 { grid-column: span 5; grid-row: span 3; }
-    .f2 { grid-column: span 4; grid-row: span 2; }
-    .f3 { grid-column: span 3; grid-row: span 2; }
-    .f4 { grid-column: span 4; grid-row: span 3; }
-    .f5 { grid-column: span 4; grid-row: span 2; }
-    .f6 { grid-column: span 4; grid-row: span 2; }
-
-    /* Lightbox */
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      background: rgba(7, 6, 5, 0.92);
-      backdrop-filter: blur(10px);
-      display: grid;
-      place-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s;
-      padding: 2rem;
-    }
-
-    .lightbox.open { opacity: 1; pointer-events: auto; }
-
-    .lightbox img {
-      max-width: min(900px, 92vw);
-      max-height: 80vh;
-      box-shadow:
-        0 0 0 4px #0a0806,
-        0 0 0 12px #d4af37,
-        0 30px 80px rgba(0,0,0,0.8);
-    }
-
-    .lightbox p {
-      margin-top: 1rem;
-      text-align: center;
-      font-family: "Cormorant Garamond", serif;
-      color: var(--gold-bright);
-      font-size: 1.15rem;
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      border: 1px solid var(--gold);
-      background: transparent;
-      color: var(--gold);
-      width: 42px;
-      height: 42px;
-      font-size: 1.2rem;
-      cursor: none;
-    }
-
-    /* =========================
-       PARCHMENT (dark reading)
-       ========================= */
-    #parchment .parchment-shell {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    .parchment-header { text-align: center; margin-bottom: 2.75rem; }
-    .parchment-header .section-label { justify-content: center; }
-    .parchment-header .section-lede { margin: 0.7rem auto 0; }
-
-    .reading-room.glass { padding: 2.5rem 2.25rem; }
-
-    .article {
-      margin-bottom: 2.75rem;
-      padding-bottom: 2.25rem;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .article:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-
-    .article-meta {
-      font-family: "Noto Serif JP", serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-      margin-bottom: 0.65rem;
-    }
-
-    .article h3 {
-      font-family: "Cinzel Decorative", serif;
-      font-size: clamp(1.3rem, 2.4vw, 1.7rem);
-      color: var(--gold-bright);
-      line-height: 1.25;
-      margin-bottom: 0.9rem;
-    }
-
-    .article p {
-      font-size: 1.12rem;
-      line-height: 1.85;
-      margin-bottom: 0.9rem;
-      color: rgba(239, 230, 214, 0.82);
-    }
-
-    /* —— Footer —— */
-    footer {
-      position: relative;
-      z-index: 2;
-      padding: 3.25rem 1.75rem;
-      text-align: center;
-      border-top: 1px solid var(--line);
-      background: rgba(7, 6, 5, 0.65);
-      backdrop-filter: blur(12px);
-    }
-
-    .footer-brand {
-      font-family: "Cinzel Decorative", serif;
-      font-size: 1.25rem;
-      color: var(--gold);
-      margin-bottom: 0.45rem;
-    }
-
-    .footer-sub {
-      font-family: "Cormorant Garamond", serif;
-      font-style: italic;
-      color: var(--muted);
-      margin-bottom: 1.35rem;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.1rem;
-    }
-
-    .footer-links a {
-      color: var(--gold-bright);
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.25s, color 0.25s;
-    }
-
-    .footer-links a:hover { border-bottom-color: var(--gold); color: var(--silk); }
-
-    .footer-copy {
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      color: rgba(239, 230, 214, 0.35);
-      font-family: "Noto Serif JP", serif;
-    }
-
-    /* Progress bar */
-    .progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      width: 0%;
-      z-index: 110;
-      background: linear-gradient(90deg, var(--vermillion), var(--gold), var(--gold-bright));
-      box-shadow: 0 0 12px rgba(212, 175, 55, 0.55);
-      pointer-events: none;
-    }
-
-    /* =========================
-       SCROLL FILM — living painting
-       ========================= */
-    #scrollfilm {
-      position: relative;
-      height: 420vh;
-      padding: 0;
-      margin: 0;
-    }
-
-    .film-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 5.5rem 1.25rem 2rem;
-      overflow: hidden;
-    }
-
-    .film-chrome {
-      width: min(920px, 94vw);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .film-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .film-meta .section-label {
-      margin-bottom: 0;
-    }
-
-    .film-meta .section-label::before,
-    .film-meta .section-label::after { content: none; }
+    .tl-role { font-family: "Cormorant Garamond", serif; font-weight: 700; font-size: 1.05rem; }
+    .tl-org { color: #e07070; font-style: italic; font-size: .95rem; }
+    .tl-dates { font-size: .7rem; letter-spacing: .08em; color: rgba(212,175,55,.65); text-transform: uppercase; }
 
-    .film-counter {
-      font-family: "Noto Serif JP", serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.28em;
-      color: var(--gold);
-      tabular-nums: true;
-      font-variant-numeric: tabular-nums;
+    /* Artwork frame */
+    .artwork {
+      position: relative; z-index: 3; justify-self: center;
+      width: min(520px, 46vw);
+      transform-style: preserve-3d;
+      transform: translateZ(20px);
     }
 
-    .film-frame {
-      position: relative;
-      padding: clamp(10px, 1.4vw, 16px);
-      background:
-        linear-gradient(145deg, #f0d78c 0%, #8a7020 22%, #e8c96a 48%, #5c4a14 72%, #d4af37 100%);
+    .frame-ornate {
+      padding: clamp(10px, 1.2vw, 16px);
+      background: linear-gradient(145deg, #f0d78c, #8a7020 28%, #e8c96a 52%, #5c4a14 78%, #d4af37);
       box-shadow:
         0 0 0 2px #0a0806,
-        0 0 0 3px rgba(212, 175, 55, 0.35),
-        0 30px 80px rgba(0, 0, 0, 0.7),
-        inset 0 0 24px rgba(0, 0, 0, 0.35);
+        0 0 60px rgba(212,175,55,.18),
+        0 35px 80px rgba(0,0,0,.7),
+        inset 0 0 20px rgba(0,0,0,.3);
+      position: relative;
+    }
+    .frame-ornate::before {
+      content: ""; position: absolute; inset: 5px;
+      border: 1px solid rgba(10,8,6,.5); pointer-events: none; z-index: 2;
+    }
+    .frame-ornate::after {
+      content: "印"; position: absolute; right: 18px; bottom: 18px; z-index: 3;
+      width: 30px; height: 30px; display: grid; place-items: center;
+      background: var(--vermillion); color: var(--silk);
+      font-family: "Noto Serif JP", serif; font-size: .85rem;
+      box-shadow: 2px 2px 0 rgba(0,0,0,.4);
     }
 
-    .film-frame::before {
-      content: "";
-      position: absolute;
-      inset: 5px;
-      border: 1px solid rgba(10, 8, 6, 0.55);
-      pointer-events: none;
-      z-index: 2;
+    .frame-glass {
+      aspect-ratio: 4 / 5;
+      overflow: hidden; background: #070605; border: 3px solid #0a0806;
+      position: relative;
     }
-
-    .film-frame::after {
-      content: "";
-      position: absolute;
-      inset: 0;
+    .frame-glass.wide { aspect-ratio: 16 / 11; }
+    .frame-glass img, .frame-glass .blank {
+      width: 100%; height: 100%; object-fit: cover;
+      transform-origin: center center;
+      will-change: transform;
+    }
+    .blank {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem;
       background:
-        repeating-linear-gradient(
-          90deg,
-          transparent 0 14px,
-          rgba(255, 255, 255, 0.04) 14px 15px
-        );
-      opacity: 0.35;
-      pointer-events: none;
+        repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(212,175,55,.04) 14px, rgba(212,175,55,.04) 15px),
+        #12100c;
+      border: 1px dashed rgba(212,175,55,.35);
+      color: rgba(212,175,55,.7);
+      font-family: "Cormorant Garamond", serif; letter-spacing: .12em;
+    }
+    .blank small {
+      font-family: "Noto Serif JP", serif; font-size: .62rem;
+      letter-spacing: .2em; color: rgba(239,230,214,.3); text-transform: uppercase;
+    }
+
+    .spotlight {
+      position: absolute; inset: -8%; z-index: 1; pointer-events: none;
+      background: radial-gradient(ellipse at 50% 35%, rgba(240,215,140,.16), transparent 55%);
       mix-blend-mode: soft-light;
     }
 
-    .film-viewport {
-      position: relative;
-      aspect-ratio: 16 / 10;
-      background: #050403;
-      border: 3px solid #0a0806;
+    /* Project strip inside workshop room */
+    .proj-strip {
+      display: flex; gap: .65rem; overflow-x: auto; padding-bottom: .4rem;
+      scrollbar-width: thin; max-width: 100%;
+    }
+    .proj-card {
+      flex: 0 0 150px; border: 1px solid var(--line);
+      background: rgba(10,8,6,.65); overflow: hidden;
+      transition: transform .3s, border-color .3s;
+    }
+    .proj-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+    .proj-card img { width: 100%; height: 90px; object-fit: cover; filter: sepia(.55) saturate(.5) brightness(.85); transition: filter .4s; }
+    .proj-card:hover img { filter: none; }
+    .proj-card span {
+      display: block; padding: .45rem .5rem .55rem;
+      font-family: "Cormorant Garamond", serif; font-size: .88rem;
+    }
+
+    .gallery-mini {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .55rem;
+    }
+    .gallery-mini figure {
       overflow: hidden;
+      box-shadow: 0 0 0 2px #0a0806, 0 0 0 5px rgba(212,175,55,.75);
+      aspect-ratio: 1;
     }
+    .gallery-mini img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.85); transition: filter .35s, transform .45s; }
+    .gallery-mini figure:hover img { filter: brightness(1); transform: scale(1.05); }
 
-    .film-viewport canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .film-vignette {
-      position: absolute;
-      inset: 0;
+    .hud {
+      position: absolute; left: 50%; bottom: 1.15rem; transform: translateX(-50%);
+      z-index: 12; display: flex; align-items: center; gap: 1rem;
+      font-family: "Noto Serif JP", serif; font-size: .62rem; letter-spacing: .2em;
+      color: rgba(212,175,55,.55); text-transform: uppercase;
       pointer-events: none;
-      background:
-        radial-gradient(ellipse at center, transparent 42%, rgba(5, 4, 3, 0.55) 100%),
-        linear-gradient(180deg, rgba(5, 4, 3, 0.15), transparent 30%, transparent 70%, rgba(5, 4, 3, 0.35));
-      z-index: 1;
+    }
+    .hud-bar {
+      width: min(220px, 40vw); height: 2px; background: rgba(212,175,55,.15); overflow: hidden;
+    }
+    .hud-bar > i { display: block; height: 100%; width: 0; background: var(--gold); }
+
+    .scroll-hint {
+      position: absolute; right: 1.5rem; bottom: 1.3rem; z-index: 12;
+      font-family: "Noto Serif JP", serif; font-size: .62rem; letter-spacing: .28em;
+      color: rgba(212,175,55,.4); writing-mode: vertical-rl; text-transform: uppercase;
+      animation: pulse 2.4s ease-in-out infinite; pointer-events: none;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: .35; transform: translateY(0); }
+      50% { opacity: .9; transform: translateY(6px); }
     }
 
-    .film-grain {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      opacity: 0.07;
-      pointer-events: none;
-      mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-    }
+    .footer-room .room-copy { max-width: 520px; }
+    .links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; font-family: "Cormorant Garamond", serif; font-size: 1.1rem; }
+    .links a { color: var(--gold-bright); border-bottom: 1px solid transparent; }
+    .links a:hover { border-bottom-color: var(--gold); }
 
-    .film-caption {
-      text-align: center;
-      font-family: "Cormorant Garamond", serif;
-      font-style: italic;
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      color: var(--muted);
-      min-height: 1.6em;
-      transition: opacity 0.35s ease;
-    }
-
-    .film-hint {
-      text-align: center;
-      font-family: "Noto Serif JP", serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.32em;
-      color: rgba(212, 175, 55, 0.45);
-      text-transform: uppercase;
-      margin-top: 0.25rem;
-      animation: bob 2.6s ease-in-out infinite;
-    }
-
-    .film-rail {
-      position: absolute;
-      left: 50%;
-      bottom: 1.4rem;
-      transform: translateX(-50%);
-      width: min(280px, 60vw);
-      height: 2px;
-      background: rgba(212, 175, 55, 0.15);
-      overflow: hidden;
-    }
-
-    .film-rail > span {
-      display: block;
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--vermillion), var(--gold));
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.45);
-    }
-
-    @media (max-width: 920px) {
-      #home { grid-template-columns: 1fr; min-height: auto; text-align: center; padding-top: 6.5rem; }
-      .hero-title { border-left: none; padding-left: 0; border-top: 1px solid var(--gold); padding-top: 1rem; display: inline-block; }
-      .hero-ctas { justify-content: center; }
-      .codex-grid { grid-template-columns: 1fr; }
-      .salon-wall { grid-template-columns: 1fr 1fr; grid-auto-rows: 160px; }
-      .f1, .f2, .f3, .f4, .f5, .f6 { grid-column: span 1; grid-row: span 1; }
-      .f1, .f4 { grid-row: span 2; }
-      .nav-links { display: none; }
-      .nav-links.open {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0; right: 0;
-        background: rgba(7, 6, 5, 0.96);
-        padding: 1.2rem 2rem 1.6rem;
-        border-bottom: 1px solid var(--line);
-        gap: 1rem;
-      }
-      .nav-toggle { display: block; }
+    @media (max-width: 900px) {
       body { cursor: auto; }
       .cursor, .cursor-dot { display: none; }
-    }
-
-    @media (max-width: 520px) {
-      .salon-wall { grid-template-columns: 1fr; }
-      .f1, .f4 { grid-row: span 1; }
-      .reading-room.glass { padding: 1.6rem 1.25rem; }
+      .room {
+        grid-template-columns: 1fr;
+        align-content: center;
+        padding: 5rem 1.25rem 5.5rem;
+        gap: 1.25rem;
+      }
+      .artwork { width: min(320px, 78vw); order: -1; }
+      .room-body { max-height: 28vh; }
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0;
+        background: rgba(5,4,3,.96); padding: 1rem 1.5rem 1.4rem; gap: .85rem;
+        pointer-events: auto; border-bottom: 1px solid var(--line);
+      }
+      .nav-toggle { display: block; }
+      .silhouettes { height: 18vh; opacity: .75; }
+      .floor { height: 30%; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
+      .scroll-hint { animation: none; }
     }
   </style>
 </head>
 <body>
-  <div id="wallpaper" aria-hidden="true"><canvas id="fx"></canvas></div>
-  <div class="wallpaper-veil" aria-hidden="true"></div>
   <div class="progress" id="progress"></div>
   <div class="cursor" id="cursor"></div>
   <div class="cursor-dot" id="cursorDot"></div>
 
-  <div class="page">
-    <nav class="nav" id="nav">
-      <a class="nav-brand magnetic" href="#home"><span class="seal-mark">印</span> Chinmayi</a>
-      <button class="nav-toggle" id="navToggle" type="button" aria-label="Menu">Menu</button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#home" data-section="home">Exhibition</a></li>
-        <li><a href="#scrollfilm" data-section="scrollfilm">Canvas</a></li>
-        <li><a href="#codex" data-section="codex">Codex</a></li>
-        <li><a href="#workshop" data-section="workshop">Workshop</a></li>
-        <li><a href="#studio" data-section="studio">Studio</a></li>
-        <li><a href="#parchment" data-section="parchment">Parchment</a></li>
-      </ul>
-    </nav>
+  <nav class="nav">
+    <a class="nav-brand" href="#journey"><span class="seal">印</span> Chinmayi</a>
+    <button class="nav-toggle" id="navToggle" type="button">Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" data-room="0">Entrance</a></li>
+      <li><a href="#" data-room="1">Codex</a></li>
+      <li><a href="#" data-room="2">Workshop</a></li>
+      <li><a href="#" data-room="3">Studio</a></li>
+      <li><a href="#" data-room="4">Parchment</a></li>
+      <li><a href="#" data-room="5">Exit</a></li>
+    </ul>
+  </nav>
 
-    <header id="home" class="section">
-      <div class="portrait-stage">
-        <div class="portrait-frame" id="portraitTilt">
-          <div class="portrait-inner">
-            <div class="portrait-placeholder" role="img" aria-label="Portrait placeholder">
-              <span>Your portrait here</span>
-              <small>assets/portrait.jpg</small>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="hero-copy">
-        <p class="hero-kicker">美術館 · Digital Guild</p>
-        <h1 class="hero-name">
-          Chinmayi R M
-          <span>The Digital Guild of Chinmayi</span>
-        </h1>
-        <p class="hero-title">AI Engineer · NLP &amp; Computer Vision · MakeMyTrip</p>
-        <div class="hero-ctas">
-          <a class="btn btn-gold magnetic" href="#scrollfilm">Play the Canvas</a>
-          <a class="btn btn-ghost magnetic" href="#codex">Enter the Codex</a>
-        </div>
-      </div>
-      <div class="scroll-cue">scroll ↓</div>
-    </header>
+  <main id="journey" style="--rooms: 6">
+    <div class="stage" id="stage">
+      <div class="stage-fog"></div>
+      <div class="floor"></div>
+      <div class="silhouettes"></div>
 
-    <section id="scrollfilm" aria-label="Living painting scroll film">
-      <div class="film-sticky">
-        <div class="film-chrome">
-          <div class="film-meta">
-            <p class="section-label">画巻 · Living Canvas</p>
-            <p class="film-counter" id="filmCounter">FRAME 01 / 12</p>
-          </div>
-          <div class="film-frame">
-            <div class="film-viewport">
-              <canvas id="filmCanvas" width="1600" height="1000"></canvas>
-              <div class="film-vignette"></div>
-              <div class="film-grain"></div>
-            </div>
-          </div>
-          <p class="film-caption" id="filmCaption">A renaissance–oriental scroll awakens…</p>
-          <p class="film-hint">scroll to play the painting</p>
+      <!-- ROOM 0: Entrance -->
+      <section class="room active" data-room="0">
+        <div class="room-wall"></div>
+        <div class="spotlight"></div>
+        <div class="room-copy">
+          <p class="room-kicker">美術館 · Entrance Hall</p>
+          <h1 class="room-title">Chinmayi R M</h1>
+          <p class="room-lede">The Digital Guild — scroll to walk through each chamber.</p>
+          <p class="room-body">AI Engineer · NLP &amp; Computer Vision · MakeMyTrip. A dark oriental museum of craft, models, and manuscripts.</p>
+          <a class="btn btn-gold" href="#" data-room="1">Enter the next room →</a>
+          <div class="meta-row"><span>Guild 2026</span><span>PESU · 8.97</span><span>Travelplex</span></div>
         </div>
-        <div class="film-rail" aria-hidden="true"><span id="filmRail"></span></div>
-      </div>
-    </section>
-
-    <section id="codex" class="section">
-      <div class="codex-inner">
-        <div class="codex-header reveal">
-          <p class="section-label">写本 · The Codex</p>
-          <h2 class="section-title">Resume &amp; Profile</h2>
-          <p class="section-lede">A dark manuscript of education, craft, and building with language models at scale.</p>
-        </div>
-        <div class="codex-grid">
-          <article class="manuscript-panel glass bio reveal">
-            <p class="drop-cap">
-              Across satellites, transformers, and travel platforms, I shape language and vision models that meet real users at scale. I trained a GLiNER-based NER system on large MakeMyTrip traffic for autosuggest—shipping an endpoint at micro F1 0.85 that now serves the main experience across the platform.
-            </p>
-            <p>
-              That internship (January–August 2026) deepened conversational quality and cut vague queries; I authored a research paper on the project. From September 2026, I continue as a Software Engineer on Travelplex, doing AI engineering in production.
-            </p>
-            <p>
-              Before MakeMyTrip: remote-sensing at ISRO, quantum Vision Transformers at CDSAML, and education recommenders. B.Tech CSE (AI &amp; ML), PES University — GPA 8.97.
-            </p>
-            <div class="seal-row">
-              <span class="seal">MakeMyTrip · AI</span>
-              <span class="seal">GLiNER · 0.85 F1</span>
-              <span class="seal">PESU · 8.97</span>
-              <span class="seal">ISRO · RRSC</span>
-            </div>
-            <div class="edu-block">
-              <h3 class="timeline-title" style="margin-bottom:0.7rem;">Education &amp; Craft</h3>
-              <p><strong style="color:var(--silk)">PES University</strong> — B.Tech CSE (AI &amp; ML), Sep 2022 – May 2026 · GPA 8.97</p>
-              <p style="margin-top:0.45rem;">PES MUN Co-Editor · TEDxPESU Curator · Apple Developers Group · CDSAML SIG</p>
-              <div class="skills-cloud">
-                <span class="skill-chip">Python</span>
-                <span class="skill-chip">PyTorch</span>
-                <span class="skill-chip">NLP / NER</span>
-                <span class="skill-chip">TensorFlow</span>
-                <span class="skill-chip">Spark / Kafka</span>
-                <span class="skill-chip">Computer Vision</span>
-                <span class="skill-chip">SQL</span>
-                <span class="skill-chip">LLMs</span>
-                <span class="skill-chip">Hadoop / Hive</span>
+        <div class="artwork">
+          <div class="frame-ornate">
+            <div class="frame-glass">
+              <div class="blank" role="img" aria-label="Portrait placeholder">
+                <span>Your portrait here</span>
+                <small>assets/portrait.jpg</small>
               </div>
             </div>
-          </article>
+          </div>
+        </div>
+      </section>
 
-          <aside class="manuscript-panel glass reveal">
-            <h3 class="timeline-title">Timeline of Achievements</h3>
-            <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;font-family:'Noto Serif JP',serif;letter-spacing:0.08em;">Hover or tap a node to unfold</p>
-            <ol class="timeline" id="timeline">
-              <li class="timeline-item open">
-                <div class="tl-role">Software Engineer — AI Engineering</div>
+      <!-- ROOM 1: Codex -->
+      <section class="room" data-room="1">
+        <div class="room-wall"></div>
+        <div class="spotlight"></div>
+        <div class="room-copy">
+          <p class="room-kicker">写本 · The Codex</p>
+          <h2 class="room-title">Resume &amp; Profile</h2>
+          <p class="room-lede">A manuscript chamber of education and achievements.</p>
+          <div class="room-body">
+            <p class="drop">Across satellites, transformers, and travel platforms, I shape language and vision models at scale. At MakeMyTrip I trained a GLiNER NER system on large real-user traffic for autosuggest — endpoint micro F1 <strong>0.85</strong>, live on the main page.</p>
+            <p>Internship Jan–Aug 2026 deepened conversational quality and reduced vague queries; research paper authored. From Sep 2026: Software Engineer, Travelplex — AI engineering.</p>
+            <ul class="timeline">
+              <li>
+                <div class="tl-role">Software Engineer — AI</div>
                 <div class="tl-org">MakeMyTrip · Travelplex</div>
-                <div class="tl-dates">September 2026 — Present</div>
-                <p class="tl-body">Building AI systems for travel—production engineering on models, data, and platform integration.</p>
+                <div class="tl-dates">Sep 2026 — Present</div>
               </li>
-              <li class="timeline-item">
+              <li>
                 <div class="tl-role">Data Science Intern</div>
-                <div class="tl-org">MakeMyTrip</div>
-                <div class="tl-dates">January 2026 — August 2026</div>
-                <p class="tl-body">GLiNER NER on large real-user data for autosuggest. Micro F1 <strong>0.85</strong>; live on main-page autosuggest. Research paper authored.</p>
+                <div class="tl-org">MakeMyTrip · GLiNER NER</div>
+                <div class="tl-dates">Jan 2026 — Aug 2026</div>
               </li>
-              <li class="timeline-item">
+              <li>
                 <div class="tl-role">Summer Intern</div>
                 <div class="tl-org">ISRO — RRSC South</div>
-                <div class="tl-dates">June 2025 — July 2025</div>
-                <p class="tl-body">Remote-sensing agricultural monitoring with deep learning on 10m, 13-band imagery; Streamlit crop dashboard.</p>
+                <div class="tl-dates">Jun 2025 — Jul 2025</div>
               </li>
-              <li class="timeline-item">
-                <div class="tl-role">Machine Learning Intern</div>
-                <div class="tl-org">Tropes and Pivots</div>
-                <div class="tl-dates">May 2024 — August 2024</div>
-                <p class="tl-body">NLP query interpretation, ranked course retrieval, and dynamic recommendation with ML + scraping.</p>
+              <li>
+                <div class="tl-role">ML / Research / TA</div>
+                <div class="tl-org">Tropes · CDSAML · PESU</div>
+                <div class="tl-dates">2024</div>
               </li>
-              <li class="timeline-item">
-                <div class="tl-role">Research Intern</div>
-                <div class="tl-org">CDSAML, PES University</div>
-                <div class="tl-dates">June 2024 — July 2024</div>
-                <p class="tl-body">Quantum ViT attention/FFN via Qiskit; custom decoder for detection; paper in progress.</p>
-              </li>
-              <li class="timeline-item">
-                <div class="tl-role">Teaching Assistant</div>
-                <div class="tl-org">PES University · Math for ML</div>
-                <div class="tl-dates">January 2024 — May 2024</div>
-                <p class="tl-body">TA for UE22AM241B — Mathematics for Machine Learning.</p>
-              </li>
-            </ol>
-          </aside>
+            </ul>
+            <div class="chips">
+              <span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">NLP</span>
+              <span class="chip">Vision</span><span class="chip">Spark</span><span class="chip">LLMs</span>
+            </div>
+          </div>
+          <div class="meta-row"><span>GPA 8.97</span><span>ISRO</span><span>GLiNER 0.85</span></div>
         </div>
-      </div>
-    </section>
-
-    <section id="workshop" class="section">
-      <div class="workshop-header reveal">
-        <p class="section-label">工房 · The Workshop</p>
-        <h2 class="section-title">Inventions &amp; Plans</h2>
-        <p class="section-lede">Drag the conveyor—previews awaken from sepia ink into full colour.</p>
-      </div>
-      <div class="conveyor-bar">
-        <span class="conveyor-hint">← drag or use arrows →</span>
-        <div class="conveyor-nav">
-          <button class="c-btn" id="cPrev" type="button" aria-label="Previous">‹</button>
-          <button class="c-btn" id="cNext" type="button" aria-label="Next">›</button>
+        <div class="artwork">
+          <div class="frame-ornate">
+            <div class="frame-glass">
+              <img src="assets/room-paint-2.jpg" alt="Codex chamber painting" />
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="conveyor" id="conveyor">
-        <article class="invention">
-          <div class="invention-preview"><img src="assets/project-gliner.jpg" alt="GLiNER NER" loading="lazy" /></div>
-          <div class="invention-body">
-            <p class="invention-tag">Production · MakeMyTrip</p>
-            <h3 class="invention-name">GLiNER Autosuggest NER</h3>
-            <p class="invention-desc">Entity recognition on real-user travel queries. Micro F1 0.85; live on main-page autosuggest.</p>
-          </div>
-        </article>
-        <article class="invention">
-          <div class="invention-preview"><img src="assets/project-yoda.jpg" alt="Yoda Bot" loading="lazy" /></div>
-          <div class="invention-body">
-            <p class="invention-tag">NLP · Dialogue</p>
-            <h3 class="invention-name">Yoda Bot</h3>
-            <p class="invention-desc">Emotion-aware DialoGPT fine-tuned on Yoda dialogue with sentiment-conditioned replies.</p>
-            <a class="invention-link" href="https://github.com/chinmayirm/Yoda-Bot" target="_blank" rel="noopener">View plans →</a>
-          </div>
-        </article>
-        <article class="invention">
-          <div class="invention-preview"><img src="assets/project-chroma.jpg" alt="Chroma Vision" loading="lazy" /></div>
-          <div class="invention-body">
-            <p class="invention-tag">Vision · Accessibility</p>
-            <h3 class="invention-name">Chroma Vision</h3>
-            <p class="invention-desc">CNN colour correction for protanopia; OpenCV + K-Means on CIFAR-10.</p>
-            <a class="invention-link" href="https://github.com/chinmayirm/Chroma-Vision" target="_blank" rel="noopener">View plans →</a>
-          </div>
-        </article>
-        <article class="invention">
-          <div class="invention-preview"><img src="assets/project-isro.jpg" alt="ISRO" loading="lazy" /></div>
-          <div class="invention-body">
-            <p class="invention-tag">ISRO · Remote Sensing</p>
-            <h3 class="invention-name">Crop Distribution Model</h3>
-            <p class="invention-desc">13-band, 10m satellite pipeline with Streamlit seasonal crop maps.</p>
-          </div>
-        </article>
-        <article class="invention">
-          <div class="invention-preview"><img src="assets/project-qvit.jpg" alt="Quantum ViT" loading="lazy" /></div>
-          <div class="invention-body">
-            <p class="invention-tag">Research · Qiskit</p>
-            <h3 class="invention-name">Quantum ViT Detection</h3>
-            <p class="invention-desc">Quantum multi-head attention &amp; FFN in Vision Transformers for detection.</p>
-          </div>
-        </article>
-        <article class="invention">
-          <div class="invention-preview"><img src="assets/project-compress.jpg" alt="Compression" loading="lazy" /></div>
-          <div class="invention-body">
-            <p class="invention-tag">ML · Imaging</p>
-            <h3 class="invention-name">Compression Analysis</h3>
-            <p class="invention-desc">Lossy vs PCA vs SVD evaluated with PSNR and compression ratio.</p>
-            <a class="invention-link" href="https://github.com/chinmayirm/Comparative-Analysis-of-Image-Compression-Techniques-using-Machine-Learning" target="_blank" rel="noopener">View plans →</a>
-          </div>
-        </article>
-        <article class="invention">
-          <div class="invention-preview"><img src="assets/project-airbnb.jpg" alt="Airbnb" loading="lazy" /></div>
-          <div class="invention-body">
-            <p class="invention-tag">R · EDA</p>
-            <h3 class="invention-name">Airbnb Listings Analysis</h3>
-            <p class="invention-desc">Cleaning, outliers, and insight functions over listing data in R.</p>
-            <a class="invention-link" href="https://github.com/chinmayirm/Airbnb-Listings-Data-Analysis" target="_blank" rel="noopener">View plans →</a>
-          </div>
-        </article>
-        <article class="invention">
-          <div class="invention-preview"><img src="assets/project-rag.jpg" alt="RAG" loading="lazy" /></div>
-          <div class="invention-body">
-            <p class="invention-tag">RAG · LlamaIndex</p>
-            <h3 class="invention-name">Geopolitical Advisory</h3>
-            <p class="invention-desc">Context-aware RAG over UN resolutions with graph-based insights.</p>
-          </div>
-        </article>
-      </div>
-    </section>
+      </section>
 
-    <section id="studio" class="section">
-      <div class="studio-header reveal">
-        <p class="section-label">画廊 · The Studio</p>
-        <h2 class="section-title">Gallery Wall</h2>
-        <p class="section-lede">Click a frame to open the salon lightbox.</p>
-      </div>
-      <div class="salon-wall">
-        <figure class="frame f1 reveal" data-caption="Prof. C N Rao Scholarship × 4">
-          <img src="assets/gallery-1.jpg" alt="Ink landscape" loading="lazy" />
-          <figcaption>Prof. C N Rao Scholarship × 4</figcaption>
-        </figure>
-        <figure class="frame f2 reveal" data-caption="DELF B2 · Français">
-          <img src="assets/gallery-2.jpg" alt="Temple" loading="lazy" />
-          <figcaption>DELF B2 · Français</figcaption>
-        </figure>
-        <figure class="frame f3 reveal" data-caption="Junior CTO Valedictorian">
-          <img src="assets/gallery-3.jpg" alt="Architecture" loading="lazy" />
-          <figcaption>Junior CTO Valedictorian</figcaption>
-        </figure>
-        <figure class="frame f4 reveal" data-caption="Latin Language ID Research">
-          <img src="assets/gallery-4.jpg" alt="Painting" loading="lazy" />
-          <figcaption>Latin Language ID Research</figcaption>
-        </figure>
-        <figure class="frame f5 reveal" data-caption="IIM Rohtak Innovation Finalist">
-          <img src="assets/gallery-5.jpg" alt="Still life" loading="lazy" />
-          <figcaption>IIM Rohtak Innovation Finalist</figcaption>
-        </figure>
-        <figure class="frame f6 reveal" data-caption="Quantum ViT · Paper in progress">
-          <img src="assets/gallery-6.jpg" alt="Mist" loading="lazy" />
-          <figcaption>Quantum ViT · Paper in progress</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section id="parchment" class="section">
-      <div class="parchment-shell">
-        <div class="parchment-header reveal">
-          <p class="section-label">羊皮紙 · The Parchment</p>
-          <h2 class="section-title">Reading Room</h2>
-          <p class="section-lede">Quiet notes from the guild—ink on night silk.</p>
+      <!-- ROOM 2: Workshop -->
+      <section class="room" data-room="2">
+        <div class="room-wall"></div>
+        <div class="spotlight"></div>
+        <div class="room-copy">
+          <p class="room-kicker">工房 · The Workshop</p>
+          <h2 class="room-title">Inventions</h2>
+          <p class="room-lede">Architectural plans and working prototypes on the bench.</p>
+          <div class="room-body">
+            <div class="proj-strip">
+              <a class="proj-card" href="https://github.com/chinmayirm/Yoda-Bot" target="_blank" rel="noopener">
+                <img src="assets/project-yoda.jpg" alt="" /><span>Yoda Bot</span>
+              </a>
+              <a class="proj-card" href="https://github.com/chinmayirm/Chroma-Vision" target="_blank" rel="noopener">
+                <img src="assets/project-chroma.jpg" alt="" /><span>Chroma Vision</span>
+              </a>
+              <div class="proj-card">
+                <img src="assets/project-gliner.jpg" alt="" /><span>GLiNER NER</span>
+              </div>
+              <div class="proj-card">
+                <img src="assets/project-isro.jpg" alt="" /><span>ISRO Crops</span>
+              </div>
+              <a class="proj-card" href="https://github.com/chinmayirm/Comparative-Analysis-of-Image-Compression-Techniques-using-Machine-Learning" target="_blank" rel="noopener">
+                <img src="assets/project-compress.jpg" alt="" /><span>Compression</span>
+              </a>
+              <div class="proj-card">
+                <img src="assets/project-qvit.jpg" alt="" /><span>Quantum ViT</span>
+              </div>
+            </div>
+            <p style="margin-top:1rem">Production NER for autosuggest, remote-sensing pipelines, dialogue agents, and quantum-augmented vision.</p>
+          </div>
+          <div class="meta-row"><span>8 inventions</span><span>Hover to awaken</span></div>
         </div>
-        <div class="reading-room glass reveal">
-          <article class="article">
-            <p class="article-meta">Essay · MakeMyTrip · 2026</p>
-            <h3>Teaching Autosuggest to Listen</h3>
-            <p class="drop-cap">
-              Vague queries are unfinished intent. On MakeMyTrip’s Data Science team I trained a GLiNER NER model for entity-aware autosuggest. The endpoint reached micro F1 0.85 and now runs across the platform—especially the main page.
-            </p>
-            <p>
-              Conversational depth improved; vague queries fell. A research paper captured what shipped. That path led into Travelplex as a Software Engineer focused on AI engineering.
-            </p>
-          </article>
-          <article class="article">
-            <p class="article-meta">Field Note · ISRO RRSC South · 2025</p>
-            <h3>Crops from Thirteen Bands</h3>
-            <p class="drop-cap">
-              At RRSC South I built an end-to-end remote-sensing pipeline—crop distribution from 10m, 13-band imagery and a spectral library—then mapped seasons in Streamlit.
-            </p>
-          </article>
-          <article class="article">
-            <p class="article-meta">Research · CDSAML · 2024</p>
-            <h3>Attention, Entangled</h3>
-            <p class="drop-cap">
-              Quantum circuits woven into Vision Transformer attention and feed-forward blocks—IBM Qiskit, a custom decoder, and a paper still unfolding with an industry mentor.
-            </p>
-          </article>
+        <div class="artwork">
+          <div class="frame-ornate">
+            <div class="frame-glass wide">
+              <img src="assets/room-paint-3.jpg" alt="Workshop painting" />
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <footer>
-      <p class="footer-brand">The Digital Guild of Chinmayi</p>
-      <p class="footer-sub">「工を極めて、美を残す」— perfect the craft, leave beauty behind.</p>
-      <div class="footer-links">
-        <a class="magnetic" href="mailto:chinmayirm.04@gmail.com">Email</a>
-        <a class="magnetic" href="https://linkedin.com/in/chinmayi-r-m-a85455253/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="magnetic" href="https://github.com/chinmayirm" target="_blank" rel="noopener">GitHub</a>
-      </div>
-      <p class="footer-copy">© 2026 Chinmayi R M · chinmayirm.github.io</p>
-    </footer>
-  </div>
+      <!-- ROOM 3: Studio -->
+      <section class="room" data-room="3">
+        <div class="room-wall"></div>
+        <div class="spotlight"></div>
+        <div class="room-copy">
+          <p class="room-kicker">画廊 · The Studio</p>
+          <h2 class="room-title">Gallery Wall</h2>
+          <p class="room-lede">Honours hung salon-style in lacquer light.</p>
+          <div class="room-body">
+            <div class="gallery-mini">
+              <figure><img src="assets/gallery-1.jpg" alt="" /></figure>
+              <figure><img src="assets/gallery-2.jpg" alt="" /></figure>
+              <figure><img src="assets/gallery-3.jpg" alt="" /></figure>
+              <figure><img src="assets/gallery-5.jpg" alt="" /></figure>
+            </div>
+            <p style="margin-top:.9rem"><strong>Prof. C N Rao Scholarship × 4</strong> · DELF B2 · Junior CTO Valedictorian · IIM Rohtak Innovation Finalist · Latin LID research · Quantum ViT paper in progress.</p>
+          </div>
+        </div>
+        <div class="artwork">
+          <div class="frame-ornate">
+            <div class="frame-glass">
+              <img src="assets/room-paint-4.jpg" alt="Studio painting" />
+            </div>
+          </div>
+        </div>
+      </section>
 
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
-    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close">✕</button>
-    <div>
-      <img id="lightboxImg" src="" alt="" />
-      <p id="lightboxCap"></p>
+      <!-- ROOM 4: Parchment -->
+      <section class="room" data-room="4">
+        <div class="room-wall"></div>
+        <div class="spotlight"></div>
+        <div class="room-copy">
+          <p class="room-kicker">羊皮紙 · Reading Room</p>
+          <h2 class="room-title">Parchment</h2>
+          <p class="room-lede">Quiet notes written in iron ink on night silk.</p>
+          <div class="room-body">
+            <p><strong>Teaching Autosuggest to Listen</strong> — Vague queries are unfinished intent. GLiNER NER at MakeMyTrip reached micro F1 0.85 and now serves main-page autosuggest.</p>
+            <p><strong>Crops from Thirteen Bands</strong> — ISRO RRSC South: 10m, 13-band crop modelling with Streamlit maps.</p>
+            <p><strong>Attention, Entangled</strong> — Quantum circuits in Vision Transformer attention via Qiskit; paper unfolding.</p>
+          </div>
+          <div class="meta-row"><span>Essays</span><span>2024–2026</span></div>
+        </div>
+        <div class="artwork">
+          <div class="frame-ornate">
+            <div class="frame-glass">
+              <img src="assets/room-paint-5.jpg" alt="Reading room painting" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROOM 5: Exit / Contact -->
+      <section class="room footer-room" data-room="5">
+        <div class="room-wall"></div>
+        <div class="spotlight"></div>
+        <div class="room-copy">
+          <p class="room-kicker">門 · The Threshold</p>
+          <h2 class="room-title">Leave a Mark</h2>
+          <p class="room-lede">「工を極めて、美を残す」— perfect the craft, leave beauty behind.</p>
+          <div class="room-body">
+            <p>The Digital Guild of Chinmayi remains open. Write, connect, or step back into the entrance hall.</p>
+            <div class="links">
+              <a href="mailto:chinmayirm.04@gmail.com">Email</a>
+              <a href="https://linkedin.com/in/chinmayi-r-m-a85455253/" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://github.com/chinmayirm" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+          <a class="btn" href="#" data-room="0">Return to entrance</a>
+          <div class="meta-row"><span>© 2026</span><span>chinmayirm.github.io</span></div>
+        </div>
+        <div class="artwork">
+          <div class="frame-ornate">
+            <div class="frame-glass">
+              <img src="assets/room-paint-6.jpg" alt="Threshold painting" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="hud">
+        <span id="hudRoom">Room 01</span>
+        <div class="hud-bar"><i id="hudBar"></i></div>
+        <span id="hudHint">scroll to enter</span>
+      </div>
+      <div class="scroll-hint">scroll</div>
     </div>
-  </div>
+  </main>
 
   <script>
     (function () {
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const isTouch = matchMedia("(hover: none), (pointer: coarse)").matches;
-      if (isTouch) document.body.classList.add("touch");
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const touch = matchMedia("(hover: none), (pointer: coarse)").matches;
+      if (touch) document.body.classList.add("touch");
 
-      /* —— Dynamic wallpaper —— */
-      const canvas = document.getElementById("fx");
-      const ctx = canvas.getContext("2d");
-      let W, H, dpr, particles, mist, petals, t = 0;
-      const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
+      const journey = document.getElementById("journey");
+      const rooms = [...document.querySelectorAll(".room")];
+      const N = rooms.length;
+      const progressEl = document.getElementById("progress");
+      const hudRoom = document.getElementById("hudRoom");
+      const hudBar = document.getElementById("hudBar");
+      const hudHint = document.getElementById("hudHint");
+      const navLinks = document.getElementById("navLinks");
+      const navToggle = document.getElementById("navToggle");
 
-      function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        W = window.innerWidth;
-        H = window.innerHeight;
-        canvas.width = W * dpr;
-        canvas.height = H * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        spawn();
+      const ROOM_NAMES = ["Entrance", "Codex", "Workshop", "Studio", "Parchment", "Threshold"];
+
+      function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function easeInOut(t) {
+        return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
       }
 
-      function spawn() {
-        const n = Math.floor((W * H) / 18000);
-        particles = Array.from({ length: Math.max(40, Math.min(n, 110)) }, () => ({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          r: Math.random() * 1.6 + 0.3,
-          vx: (Math.random() - 0.5) * 0.25,
-          vy: -Math.random() * 0.35 - 0.05,
-          a: Math.random() * 0.45 + 0.1,
-          g: Math.random() > 0.7
-        }));
-        mist = Array.from({ length: 5 }, (_, i) => ({
-          x: (W / 5) * i + Math.random() * 80,
-          y: H * (0.2 + Math.random() * 0.55),
-          w: W * (0.35 + Math.random() * 0.25),
-          h: H * (0.18 + Math.random() * 0.15),
-          s: 0.15 + Math.random() * 0.2,
-          phase: Math.random() * Math.PI * 2
-        }));
-        petals = Array.from({ length: 18 }, () => ({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          s: 4 + Math.random() * 7,
-          r: Math.random() * Math.PI * 2,
-          vr: (Math.random() - 0.5) * 0.02,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: 0.2 + Math.random() * 0.45,
-          a: 0.15 + Math.random() * 0.35
-        }));
+      function setRoomTransform(el, { opacity, z, scale, blur, brightness }) {
+        el.style.opacity = String(opacity);
+        el.style.filter = `blur(${blur}px) brightness(${brightness})`;
+        el.style.transform = `translate3d(0,0,${z}px) scale(${scale})`;
       }
 
-      function drawPetal(p) {
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.r);
-        ctx.fillStyle = `rgba(194, 59, 60, ${p.a})`;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, p.s * 0.55, p.s, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
+      function paint(global) {
+        const seg = 1 / N;
+        const raw = clamp(global, 0, 0.9999);
+        const idx = Math.min(N - 1, Math.floor(raw / seg));
+        const local = (raw - idx * seg) / seg;
+        const t = easeInOut(local);
 
-      function frame() {
-        t += 0.004;
-        mouse.x += (mouse.tx - mouse.x) * 0.06;
-        mouse.y += (mouse.ty - mouse.y) * 0.06;
-        ctx.clearRect(0, 0, W, H);
+        rooms.forEach((room, i) => {
+          room.classList.remove("active", "incoming");
+          const art = room.querySelector(".frame-glass img, .frame-glass .blank");
+          const copy = room.querySelector(".room-copy");
 
-        const gx = mouse.x * W;
-        const gy = mouse.y * H;
-        const glow = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(W, H) * 0.45);
-        glow.addColorStop(0, "rgba(122, 31, 31, 0.16)");
-        glow.addColorStop(0.45, "rgba(212, 175, 55, 0.04)");
-        glow.addColorStop(1, "transparent");
-        ctx.fillStyle = glow;
-        ctx.fillRect(0, 0, W, H);
-
-        mist.forEach((m) => {
-          m.x += Math.sin(t + m.phase) * m.s * 0.4;
-          const g = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.w * 0.55);
-          g.addColorStop(0, "rgba(239, 230, 214, 0.045)");
-          g.addColorStop(0.5, "rgba(61, 107, 88, 0.03)");
-          g.addColorStop(1, "transparent");
-          ctx.fillStyle = g;
-          ctx.beginPath();
-          ctx.ellipse(m.x, m.y + Math.sin(t + m.phase) * 20, m.w, m.h, 0, 0, Math.PI * 2);
-          ctx.fill();
-        });
-
-        ctx.strokeStyle = "rgba(212, 175, 55, 0.07)";
-        ctx.lineWidth = 1;
-        for (let i = 0; i < 4; i++) {
-          const y = H * (0.55 + i * 0.1) + Math.sin(t * 1.2 + i) * 12;
-          ctx.beginPath();
-          for (let x = 0; x <= W; x += 18) {
-            const yy = y + Math.sin(x * 0.012 + t * 2 + i) * (8 + i * 2);
-            if (x === 0) ctx.moveTo(x, yy);
-            else ctx.lineTo(x, yy);
+          if (i === idx) {
+            room.classList.add("active");
+            // dwell then zoom into the painting / through the doorway
+            const zoom = t < 0.28 ? 0 : (t - 0.28) / 0.72;
+            const z = lerp(0, 520, zoom);
+            const scale = lerp(1, 2.35, zoom);
+            const opacity = zoom > 0.78 ? lerp(1, 0, (zoom - 0.78) / 0.22) : 1;
+            const blur = zoom > 0.65 ? lerp(0, 6, (zoom - 0.65) / 0.35) : 0;
+            setRoomTransform(room, { opacity, z, scale, blur, brightness: lerp(1, 1.15, zoom) });
+            if (art) art.style.transform = `scale(${lerp(1, 1.25, zoom)})`;
+            if (copy) copy.style.opacity = zoom > 0.45 ? String(lerp(1, 0, (zoom - 0.45) / 0.35)) : "1";
+          } else if (i === idx + 1) {
+            room.classList.add("incoming");
+            // next room rushes toward you through the frame
+            const enter = t < 0.42 ? 0 : (t - 0.42) / 0.58;
+            const z = lerp(-780, 0, enter);
+            const scale = lerp(0.55, 1, enter);
+            const opacity = enter * enter;
+            const blur = lerp(10, 0, enter);
+            setRoomTransform(room, { opacity, z, scale, blur, brightness: lerp(0.7, 1, enter) });
+            if (art) art.style.transform = "scale(1)";
+            if (copy) copy.style.opacity = enter > 0.55 ? String(lerp(0, 1, (enter - 0.55) / 0.45)) : "0";
+          } else if (i < idx) {
+            setRoomTransform(room, { opacity: 0, z: 600, scale: 2.4, blur: 8, brightness: 1.2 });
+            if (copy) copy.style.opacity = "0";
+          } else {
+            setRoomTransform(room, { opacity: 0, z: -900, scale: 0.5, blur: 12, brightness: 0.6 });
+            if (copy) copy.style.opacity = "0";
           }
-          ctx.stroke();
-        }
-
-        particles.forEach((p) => {
-          p.x += p.vx + (mouse.x - 0.5) * 0.15;
-          p.y += p.vy;
-          if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
-          if (p.x < -10) p.x = W + 10;
-          if (p.x > W + 10) p.x = -10;
-          ctx.beginPath();
-          ctx.fillStyle = p.g
-            ? `rgba(240, 215, 140, ${p.a})`
-            : `rgba(239, 230, 214, ${p.a * 0.7})`;
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fill();
         });
 
-        petals.forEach((p) => {
-          p.x += p.vx + Math.sin(t + p.y * 0.01) * 0.3;
-          p.y += p.vy;
-          p.r += p.vr;
-          if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W; }
-          drawPetal(p);
+        const roomLabel = String(idx + 1).padStart(2, "0");
+        hudRoom.textContent = `Room ${roomLabel} · ${ROOM_NAMES[idx]}`;
+        hudBar.style.width = `${(local * 100).toFixed(1)}%`;
+        hudHint.textContent = local > 0.35 ? "entering next room" : "scroll to enter";
+        progressEl.style.width = `${(global * 100).toFixed(2)}%`;
+
+        navLinks.querySelectorAll("a").forEach((a) => {
+          a.classList.toggle("active", Number(a.dataset.room) === idx);
         });
-
-        if (!reduce) requestAnimationFrame(frame);
       }
 
-      window.addEventListener("resize", resize);
-      window.addEventListener("pointermove", (e) => {
-        mouse.tx = e.clientX / W;
-        mouse.ty = e.clientY / H;
-      }, { passive: true });
-
-      resize();
-      if (!reduce) requestAnimationFrame(frame);
-      else {
-        ctx.fillStyle = "rgba(122,31,31,0.12)";
-        ctx.fillRect(0, 0, W, H);
+      function scrollProgress() {
+        const max = journey.offsetHeight - innerHeight;
+        return max > 0 ? clamp(scrollY / max, 0, 1) : 0;
       }
 
-      /* —— Cursor —— */
-      const cur = document.getElementById("cursor");
-      const dot = document.getElementById("cursorDot");
-      let cx = 0, cy = 0, dx = 0, dy = 0;
+      let ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          paint(scrollProgress());
+          ticking = false;
+        });
+      }
 
-      if (!isTouch) {
-        window.addEventListener("pointermove", (e) => {
+      function goToRoom(i) {
+        const max = journey.offsetHeight - innerHeight;
+        const target = ((i + 0.08) / N) * max;
+        scrollTo({ top: target, behavior: reduce ? "auto" : "smooth" });
+      }
+
+      navToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("open");
+        navToggle.textContent = navLinks.classList.contains("open") ? "Close" : "Menu";
+      });
+
+      document.querySelectorAll("[data-room]").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          goToRoom(Number(el.dataset.room));
+          navLinks.classList.remove("open");
+          navToggle.textContent = "Menu";
+        });
+      });
+
+      /* cursor */
+      if (!touch) {
+        const cur = document.getElementById("cursor");
+        const dot = document.getElementById("cursorDot");
+        let cx = 0, cy = 0, dx = 0, dy = 0;
+        addEventListener("pointermove", (e) => {
           dx = e.clientX; dy = e.clientY;
           dot.style.left = dx + "px";
           dot.style.top = dy + "px";
         }, { passive: true });
-
         (function follow() {
           cx += (dx - cx) * 0.18;
           cy += (dy - cy) * 0.18;
@@ -1697,249 +737,19 @@
           cur.style.top = cy + "px";
           requestAnimationFrame(follow);
         })();
-
-        document.querySelectorAll("a, button, .frame, .timeline-item, .invention, .seal, .skill-chip").forEach((el) => {
+        document.querySelectorAll("a, button, .proj-card, .gallery-mini figure").forEach((el) => {
           el.addEventListener("mouseenter", () => cur.classList.add("hover"));
           el.addEventListener("mouseleave", () => cur.classList.remove("hover"));
         });
       }
 
-      /* —— Magnetic —— */
-      document.querySelectorAll(".magnetic").forEach((el) => {
-        el.addEventListener("pointermove", (e) => {
-          const r = el.getBoundingClientRect();
-          const x = e.clientX - r.left - r.width / 2;
-          const y = e.clientY - r.top - r.height / 2;
-          el.style.transform = `translate(${x * 0.18}px, ${y * 0.22}px)`;
-        });
-        el.addEventListener("pointerleave", () => {
-          el.style.transform = "";
-        });
-      });
+      addEventListener("scroll", onScroll, { passive: true });
+      addEventListener("resize", onScroll, { passive: true });
+      paint(0);
 
-      /* —— Portrait tilt —— */
-      const tilt = document.getElementById("portraitTilt");
-      if (tilt && !isTouch) {
-        tilt.parentElement.addEventListener("pointermove", (e) => {
-          const r = tilt.getBoundingClientRect();
-          const px = (e.clientX - r.left) / r.width - 0.5;
-          const py = (e.clientY - r.top) / r.height - 0.5;
-          tilt.style.transform = `rotateY(${px * 14}deg) rotateX(${-py * 10}deg)`;
-        });
-        tilt.parentElement.addEventListener("pointerleave", () => {
-          tilt.style.transform = "";
-        });
-      }
-
-      /* —— Nav / progress / active —— */
-      const nav = document.getElementById("nav");
-      const toggle = document.getElementById("navToggle");
-      const links = document.getElementById("navLinks");
-      const progress = document.getElementById("progress");
-      const sections = ["home", "scrollfilm", "codex", "workshop", "studio", "parchment"];
-
-      toggle.addEventListener("click", () => {
-        links.classList.toggle("open");
-        toggle.textContent = links.classList.contains("open") ? "Close" : "Menu";
-      });
-      links.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
-        links.classList.remove("open");
-        toggle.textContent = "Menu";
-      }));
-
-      window.addEventListener("scroll", () => {
-        nav.classList.toggle("scrolled", window.scrollY > 30);
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        progress.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + "%";
-
-        let current = "home";
-        sections.forEach((id) => {
-          const el = document.getElementById(id);
-          if (el && el.getBoundingClientRect().top < window.innerHeight * 0.4) current = id;
-        });
-        links.querySelectorAll("a").forEach((a) => {
-          a.classList.toggle("active", a.dataset.section === current);
-        });
-      }, { passive: true });
-
-      /* —— Reveal —— */
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); });
-      }, { threshold: 0.12, rootMargin: "0px 0px -30px 0px" });
-      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-
-      /* —— Timeline —— */
-      document.querySelectorAll(".timeline-item").forEach((item) => {
-        item.addEventListener("click", () => {
-          document.querySelectorAll(".timeline-item").forEach((i) => i.classList.remove("open"));
-          item.classList.add("open");
-        });
-      });
-
-      /* —— Conveyor —— */
-      const conveyor = document.getElementById("conveyor");
-      let isDown = false, startX = 0, scrollLeft = 0;
-      conveyor.addEventListener("mousedown", (e) => {
-        isDown = true;
-        startX = e.pageX - conveyor.offsetLeft;
-        scrollLeft = conveyor.scrollLeft;
-        conveyor.style.cursor = "grabbing";
-      });
-      ["mouseleave", "mouseup"].forEach((evt) => conveyor.addEventListener(evt, () => {
-        isDown = false;
-        conveyor.style.cursor = "";
-      }));
-      conveyor.addEventListener("mousemove", (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        conveyor.scrollLeft = scrollLeft - (e.pageX - conveyor.offsetLeft - startX) * 1.25;
-      });
-      document.getElementById("cPrev").addEventListener("click", () => {
-        conveyor.scrollBy({ left: -340, behavior: "smooth" });
-      });
-      document.getElementById("cNext").addEventListener("click", () => {
-        conveyor.scrollBy({ left: 340, behavior: "smooth" });
-      });
-
-      /* —— Lightbox —— */
-      const lb = document.getElementById("lightbox");
-      const lbImg = document.getElementById("lightboxImg");
-      const lbCap = document.getElementById("lightboxCap");
-      document.querySelectorAll(".frame").forEach((f) => {
-        f.addEventListener("click", () => {
-          const img = f.querySelector("img");
-          lbImg.src = img.src;
-          lbImg.alt = img.alt;
-          lbCap.textContent = f.dataset.caption || "";
-          lb.classList.add("open");
-          lb.setAttribute("aria-hidden", "false");
-        });
-      });
-      function closeLb() {
-        lb.classList.remove("open");
-        lb.setAttribute("aria-hidden", "true");
-      }
-      document.getElementById("lightboxClose").addEventListener("click", closeLb);
-      lb.addEventListener("click", (e) => { if (e.target === lb) closeLb(); });
-      window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLb(); });
-
-      /* —— Scroll film: renaissance / oriental painting as video —— */
-      const filmSection = document.getElementById("scrollfilm");
-      const filmCanvas = document.getElementById("filmCanvas");
-      const filmCtx = filmCanvas.getContext("2d", { alpha: false });
-      const filmCounter = document.getElementById("filmCounter");
-      const filmCaption = document.getElementById("filmCaption");
-      const filmRail = document.getElementById("filmRail");
-
-      const filmPaths = Array.from({ length: 12 }, (_, i) =>
-        `assets/film/frame-${String(i + 1).padStart(2, "0")}.jpg`
-      );
-
-      const filmCaptions = [
-        "Ink gathers on silk — the guild hall opens.",
-        "Gold leaf catches lantern light across the frame.",
-        "A lacquer stillness; mountains breathe in mist.",
-        "Temple wood and vermillion seal the hour.",
-        "Waves of seigaiha roll beneath the scroll.",
-        "The academy wall holds its silent audience.",
-        "Peony and dusk — colour returns to the canvas.",
-        "Brushstroke by brushstroke, the scene advances.",
-        "East meets atelier: renaissance depth, oriental ink.",
-        "The camera walks the painting like a pilgrim.",
-        "Shadow and gilt — a living museum reel.",
-        "The scroll rests. The guild awaits within."
-      ];
-
-      const filmImages = [];
-      let filmReady = 0;
-      let filmProgress = 0;
-      let filmDrawn = -1;
-
-      function coverDraw(img, progressWithin, alpha) {
-        const cw = filmCanvas.width;
-        const ch = filmCanvas.height;
-        const iw = img.naturalWidth || img.width;
-        const ih = img.naturalHeight || img.height;
-        if (!iw || !ih) return;
-
-        const zoom = 1.18 + progressWithin * 0.22;
-        const panX = (progressWithin - 0.5) * 0.14;
-        const panY = Math.sin(progressWithin * Math.PI) * 0.06;
-
-        const scale = Math.max(cw / iw, ch / ih) * zoom;
-        const dw = iw * scale;
-        const dh = ih * scale;
-        const dx = (cw - dw) / 2 + panX * cw;
-        const dy = (ch - dh) / 2 + panY * ch;
-
-        filmCtx.globalAlpha = alpha;
-        filmCtx.drawImage(img, dx, dy, dw, dh);
-        filmCtx.globalAlpha = 1;
-      }
-
-      function renderFilm(p) {
-        const n = filmImages.length;
-        if (!n || filmReady < n) return;
-
-        const max = n - 1;
-        const f = Math.min(Math.max(p, 0), 1) * max;
-        const i0 = Math.floor(f);
-        const i1 = Math.min(i0 + 1, max);
-        const local = f - i0;
-
-        filmCtx.fillStyle = "#050403";
-        filmCtx.fillRect(0, 0, filmCanvas.width, filmCanvas.height);
-
-        coverDraw(filmImages[i0], local, 1);
-        if (i1 !== i0) coverDraw(filmImages[i1], local, local);
-
-        filmCtx.fillStyle = "rgba(122, 31, 31, 0.08)";
-        filmCtx.fillRect(0, 0, filmCanvas.width, filmCanvas.height);
-
-        const frameNum = String(i0 + 1).padStart(2, "0");
-        filmCounter.textContent = `FRAME ${frameNum} / ${String(n).padStart(2, "0")}`;
-        filmCaption.textContent = filmCaptions[i0] || "";
-        filmRail.style.width = `${(p * 100).toFixed(2)}%`;
-        filmDrawn = f;
-      }
-
-      function filmScrollUpdate() {
-        const rect = filmSection.getBoundingClientRect();
-        const total = filmSection.offsetHeight - window.innerHeight;
-        const scrolled = Math.min(Math.max(-rect.top, 0), total);
-        filmProgress = total > 0 ? scrolled / total : 0;
-        if (Math.abs(filmProgress * 11 - filmDrawn) > 0.01 || filmDrawn < 0) {
-          renderFilm(filmProgress);
-        }
-      }
-
-      filmPaths.forEach((src, idx) => {
-        const img = new Image();
-        img.decoding = "async";
-        img.onload = () => {
-          filmReady += 1;
-          if (filmReady === filmPaths.length) {
-            renderFilm(0);
-            filmScrollUpdate();
-          }
-        };
-        img.onerror = () => {
-          filmReady += 1;
-        };
-        img.src = src;
-        filmImages[idx] = img;
-      });
-
-      let filmTicking = false;
-      window.addEventListener("scroll", () => {
-        if (filmTicking) return;
-        filmTicking = true;
-        requestAnimationFrame(() => {
-          filmScrollUpdate();
-          filmTicking = false;
-        });
-      }, { passive: true });
-      window.addEventListener("resize", () => renderFilm(filmProgress), { passive: true });
+      /* preload paintings so zooms stay sharp */
+      ["assets/room-stone.jpg","assets/room-paint-2.jpg","assets/room-paint-3.jpg","assets/room-paint-4.jpg","assets/room-paint-5.jpg","assets/room-paint-6.jpg"]
+        .forEach((src) => { const i = new Image(); i.src = src; });
     })();
   </script>
 </body>
