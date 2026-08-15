@@ -425,14 +425,20 @@
       }
 
       function drawCover(img, dx, dy, dw, dh, fx, fy, zoom) {
+        if (!img || !img.naturalWidth) {
+          ctx.fillStyle = "#1a1510";
+          ctx.fillRect(dx, dy, dw, dh);
+          return;
+        }
         const iw = img.naturalWidth;
         const ih = img.naturalHeight;
-        const scale = Math.max(dw / iw, dh / ih) * zoom;
-        const tw = iw * scale;
-        const th = ih * scale;
-        const ox = dx + (dw - tw) * fx;
-        const oy = dy + (dh - th) * fy;
-        ctx.drawImage(img, ox, oy, tw, th);
+        const z = Math.max(1, Math.min(zoom || 1, 6));
+        const base = Math.max(dw / iw, dh / ih);
+        const visW = Math.min(iw, dw / (base * z));
+        const visH = Math.min(ih, dh / (base * z));
+        const sx = clamp(fx * iw - visW / 2, 0, Math.max(0, iw - visW));
+        const sy = clamp(fy * ih - visH / 2, 0, Math.max(0, ih - visH));
+        ctx.drawImage(img, sx, sy, visW, visH, dx, dy, dw, dh);
       }
 
       function drawFrameRect(x, y, w, h, thickness) {
@@ -473,19 +479,23 @@
       }
 
       function drawGallery(img, room, dive) {
-        // dive 0 = standing in room looking at frame
-        // dive 1 = frame fills screen / entering painting
-        const wallZoom = lerp(1.05, 1.35, dive);
-        if (wallImg) {
-          ctx.filter = "brightness(0.28) contrast(1.1) saturate(0.6)";
+        const wallZoom = lerp(1.05, 1.25, dive);
+        if (wallImg && wallImg.naturalWidth) {
+          ctx.save();
+          try {
+            ctx.filter = "brightness(0.32) contrast(1.08) saturate(0.65)";
+          } catch (_) {}
           drawCover(wallImg, 0, 0, W, H, 0.5, 0.45, wallZoom);
-          ctx.filter = "none";
+          try { ctx.filter = "none"; } catch (_) {}
+          ctx.restore();
         } else {
-          ctx.fillStyle = "#12100c";
+          const g = ctx.createLinearGradient(0, 0, 0, H);
+          g.addColorStop(0, "#1c1712");
+          g.addColorStop(1, "#0a0806");
+          ctx.fillStyle = g;
           ctx.fillRect(0, 0, W, H);
         }
 
-        // perspective floor
         const floorGrad = ctx.createLinearGradient(0, H * 0.55, 0, H);
         floorGrad.addColorStop(0, "rgba(5,5,5,0)");
         floorGrad.addColorStop(0.35, "rgba(18,14,10,0.55)");
@@ -493,14 +503,12 @@
         ctx.fillStyle = floorGrad;
         ctx.fillRect(0, H * 0.55, W, H * 0.45);
 
-        // spotlight
         const spot = ctx.createRadialGradient(W * 0.55, H * 0.38, 10, W * 0.55, H * 0.4, W * 0.55);
         spot.addColorStop(0, "rgba(240,215,140,0.14)");
         spot.addColorStop(1, "transparent");
         ctx.fillStyle = spot;
         ctx.fillRect(0, 0, W, H);
 
-        // framed painting geometry — grows toward fullscreen
         const targetW = lerp(Math.min(W * 0.42, 520), W * 1.02, easeInOut(dive));
         const targetH = lerp(Math.min(H * 0.62, 640), H * 1.02, easeInOut(dive));
         const cx = lerp(W * 0.58, W * 0.5, dive);
@@ -513,13 +521,12 @@
 
         ctx.save();
         ctx.beginPath();
-        ctx.rect(x, y, targetW, targetH);
+        ctx.rect(x, y, Math.max(1, targetW), Math.max(1, targetH));
         ctx.clip();
-        const paintZoom = lerp(1.08, 1.45, dive);
+        const paintZoom = lerp(1.05, 1.35, dive);
         drawCover(img, x, y, targetW, targetH, room.focal[0], room.focal[1], paintZoom);
         ctx.restore();
 
-        // seal stamp when framed
         if (dive < 0.7) {
           ctx.globalAlpha = 1 - dive / 0.7;
           ctx.fillStyle = "#c23b3c";
@@ -536,36 +543,32 @@
           ctx.globalAlpha = 1;
         }
 
-        // vignette
-        const vig = ctx.createRadialGradient(W / 2, H / 2, W * 0.2, W / 2, H / 2, W * 0.85);
+        const vig = ctx.createRadialGradient(W / 2, H / 2, W * 0.25, W / 2, H / 2, W * 0.9);
         vig.addColorStop(0, "transparent");
-        vig.addColorStop(1, "rgba(0,0,0,0.55)");
+        vig.addColorStop(1, "rgba(0,0,0,0.4)");
         ctx.fillStyle = vig;
         ctx.fillRect(0, 0, W, H);
       }
 
       function drawInside(img, room, fly) {
-        // fly through the painting toward focal vanishing point
-        const zoom = lerp(1.35, 8.5, easeInOut(fly));
+        const zoom = lerp(1.2, 3.4, easeInOut(fly));
         drawCover(img, 0, 0, W, H, room.focal[0], room.focal[1], zoom);
 
-        // motion streak / tunnel feel
-        if (fly > 0.15) {
-          const blurAmt = smoothstep(0.15, 0.9, fly);
+        if (fly > 0.2) {
+          const blurAmt = smoothstep(0.2, 1, fly) * 0.22;
           ctx.save();
-          ctx.globalAlpha = blurAmt * 0.35;
+          ctx.globalAlpha = blurAmt;
           ctx.translate(W / 2, H / 2);
-          ctx.scale(1 + blurAmt * 0.08, 1 + blurAmt * 0.08);
+          ctx.scale(1.04, 1.04);
           ctx.translate(-W / 2, -H / 2);
-          drawCover(img, 0, 0, W, H, room.focal[0], room.focal[1], zoom * 1.05);
+          drawCover(img, 0, 0, W, H, room.focal[0], room.focal[1], zoom * 1.06);
           ctx.restore();
           ctx.globalAlpha = 1;
         }
 
-        // dark edges during high speed
-        const edge = ctx.createRadialGradient(W / 2, H / 2, W * 0.15, W / 2, H / 2, W * 0.75);
+        const edge = ctx.createRadialGradient(W / 2, H / 2, W * 0.28, W / 2, H / 2, W * 0.9);
         edge.addColorStop(0, "transparent");
-        edge.addColorStop(1, `rgba(0,0,0,${0.25 + fly * 0.55})`);
+        edge.addColorStop(1, `rgba(0,0,0,${0.12 + fly * 0.28})`);
         ctx.fillStyle = edge;
         ctx.fillRect(0, 0, W, H);
       }
@@ -617,52 +620,57 @@
         const local = (raw - idx * seg) / seg;
         const room = ROOMS[idx];
         const img = images[idx];
-        const next = images[Math.min(idx + 1, n - 1)];
-        const nextRoom = ROOMS[Math.min(idx + 1, n - 1)];
+        const nextIdx = Math.min(idx + 1, n - 1);
+        const next = images[nextIdx];
+        const nextRoom = ROOMS[nextIdx];
+
+        if (!img) {
+          ctx.fillStyle = "#12100c";
+          ctx.fillRect(0, 0, W, H);
+          return;
+        }
 
         ctx.fillStyle = "#050505";
         ctx.fillRect(0, 0, W, H);
 
-        // timeline inside each room segment:
-        // 0.00–0.28 settle gallery
-        // 0.28–0.55 dive into frame
-        // 0.55–0.82 fly through painting
-        // 0.82–1.00 arrive next gallery (or hold last)
         let phase = "settle";
         let t = 0;
+        let copyIdx = idx;
 
-        if (local < 0.28) {
+        if (local < 0.22) {
           phase = "settle";
-          t = local / 0.28;
+          t = local / 0.22;
           drawGallery(img, room, 0);
-        } else if (local < 0.55) {
+        } else if (local < 0.48) {
           phase = "dive";
-          t = (local - 0.28) / 0.27;
+          t = (local - 0.22) / 0.26;
           drawGallery(img, room, easeInOut(t));
-        } else if (local < 0.82) {
+        } else if (local < 0.72) {
           phase = "fly";
-          t = (local - 0.55) / 0.27;
+          t = (local - 0.48) / 0.24;
           drawInside(img, room, easeInOut(t));
-          // blend next room early
-          if (idx < n - 1 && t > 0.55) {
-            const a = smoothstep(0.55, 1, t);
-            ctx.globalAlpha = a;
-            drawGallery(next, nextRoom, lerp(0.85, 0.15, a));
-            ctx.globalAlpha = 1;
+          if (idx < n - 1) {
+            const a = smoothstep(0.35, 1, t);
+            if (a > 0) {
+              ctx.globalAlpha = a;
+              drawGallery(next, nextRoom, lerp(0.7, 0.05, a));
+              ctx.globalAlpha = 1;
+            }
+            if (a > 0.55) copyIdx = nextIdx;
           }
         } else {
           phase = "arrive";
-          t = (local - 0.82) / 0.18;
+          t = (local - 0.72) / 0.28;
           if (idx < n - 1) {
-            // finish morph into next gallery
-            ctx.globalAlpha = 1;
-            drawGallery(next, nextRoom, lerp(0.15, 0, easeInOut(t)));
+            drawGallery(next, nextRoom, lerp(0.08, 0, easeInOut(t)));
+            copyIdx = nextIdx;
+            phase = t < 0.4 ? "arrive" : "settle";
           } else {
             drawGallery(img, room, 0);
           }
         }
 
-        updateCopy(idx, phase, t);
+        updateCopy(copyIdx, phase === "arrive" && copyIdx === nextIdx ? "arrive" : phase, t);
         rail.style.width = (local * 100).toFixed(2) + "%";
       }
 
