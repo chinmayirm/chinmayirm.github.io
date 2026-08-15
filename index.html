@@ -1002,6 +1002,170 @@
       pointer-events: none;
     }
 
+    /* =========================
+       SCROLL FILM — living painting
+       ========================= */
+    #scrollfilm {
+      position: relative;
+      height: 420vh;
+      padding: 0;
+      margin: 0;
+    }
+
+    .film-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5.5rem 1.25rem 2rem;
+      overflow: hidden;
+    }
+
+    .film-chrome {
+      width: min(920px, 94vw);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .film-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .film-meta .section-label {
+      margin-bottom: 0;
+    }
+
+    .film-meta .section-label::before,
+    .film-meta .section-label::after { content: none; }
+
+    .film-counter {
+      font-family: "Noto Serif JP", serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.28em;
+      color: var(--gold);
+      tabular-nums: true;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .film-frame {
+      position: relative;
+      padding: clamp(10px, 1.4vw, 16px);
+      background:
+        linear-gradient(145deg, #f0d78c 0%, #8a7020 22%, #e8c96a 48%, #5c4a14 72%, #d4af37 100%);
+      box-shadow:
+        0 0 0 2px #0a0806,
+        0 0 0 3px rgba(212, 175, 55, 0.35),
+        0 30px 80px rgba(0, 0, 0, 0.7),
+        inset 0 0 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .film-frame::before {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border: 1px solid rgba(10, 8, 6, 0.55);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .film-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0 14px,
+          rgba(255, 255, 255, 0.04) 14px 15px
+        );
+      opacity: 0.35;
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+    }
+
+    .film-viewport {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background: #050403;
+      border: 3px solid #0a0806;
+      overflow: hidden;
+    }
+
+    .film-viewport canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .film-vignette {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at center, transparent 42%, rgba(5, 4, 3, 0.55) 100%),
+        linear-gradient(180deg, rgba(5, 4, 3, 0.15), transparent 30%, transparent 70%, rgba(5, 4, 3, 0.35));
+      z-index: 1;
+    }
+
+    .film-grain {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      opacity: 0.07;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    }
+
+    .film-caption {
+      text-align: center;
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted);
+      min-height: 1.6em;
+      transition: opacity 0.35s ease;
+    }
+
+    .film-hint {
+      text-align: center;
+      font-family: "Noto Serif JP", serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.32em;
+      color: rgba(212, 175, 55, 0.45);
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+      animation: bob 2.6s ease-in-out infinite;
+    }
+
+    .film-rail {
+      position: absolute;
+      left: 50%;
+      bottom: 1.4rem;
+      transform: translateX(-50%);
+      width: min(280px, 60vw);
+      height: 2px;
+      background: rgba(212, 175, 55, 0.15);
+      overflow: hidden;
+    }
+
+    .film-rail > span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--vermillion), var(--gold));
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.45);
+    }
+
     @media (max-width: 920px) {
       #home { grid-template-columns: 1fr; min-height: auto; text-align: center; padding-top: 6.5rem; }
       .hero-title { border-left: none; padding-left: 0; border-top: 1px solid var(--gold); padding-top: 1rem; display: inline-block; }
@@ -1054,6 +1218,7 @@
       <button class="nav-toggle" id="navToggle" type="button" aria-label="Menu">Menu</button>
       <ul class="nav-links" id="navLinks">
         <li><a href="#home" data-section="home">Exhibition</a></li>
+        <li><a href="#scrollfilm" data-section="scrollfilm">Canvas</a></li>
         <li><a href="#codex" data-section="codex">Codex</a></li>
         <li><a href="#workshop" data-section="workshop">Workshop</a></li>
         <li><a href="#studio" data-section="studio">Studio</a></li>
@@ -1080,12 +1245,33 @@
         </h1>
         <p class="hero-title">AI Engineer · NLP &amp; Computer Vision · MakeMyTrip</p>
         <div class="hero-ctas">
-          <a class="btn btn-gold magnetic" href="#codex">Enter the Codex</a>
-          <a class="btn btn-ghost magnetic" href="#workshop">View Inventions</a>
+          <a class="btn btn-gold magnetic" href="#scrollfilm">Play the Canvas</a>
+          <a class="btn btn-ghost magnetic" href="#codex">Enter the Codex</a>
         </div>
       </div>
       <div class="scroll-cue">scroll ↓</div>
     </header>
+
+    <section id="scrollfilm" aria-label="Living painting scroll film">
+      <div class="film-sticky">
+        <div class="film-chrome">
+          <div class="film-meta">
+            <p class="section-label">画巻 · Living Canvas</p>
+            <p class="film-counter" id="filmCounter">FRAME 01 / 12</p>
+          </div>
+          <div class="film-frame">
+            <div class="film-viewport">
+              <canvas id="filmCanvas" width="1600" height="1000"></canvas>
+              <div class="film-vignette"></div>
+              <div class="film-grain"></div>
+            </div>
+          </div>
+          <p class="film-caption" id="filmCaption">A renaissance–oriental scroll awakens…</p>
+          <p class="film-hint">scroll to play the painting</p>
+        </div>
+        <div class="film-rail" aria-hidden="true"><span id="filmRail"></span></div>
+      </div>
+    </section>
 
     <section id="codex" class="section">
       <div class="codex-inner">
@@ -1550,7 +1736,7 @@
       const toggle = document.getElementById("navToggle");
       const links = document.getElementById("navLinks");
       const progress = document.getElementById("progress");
-      const sections = ["home", "codex", "workshop", "studio", "parchment"];
+      const sections = ["home", "scrollfilm", "codex", "workshop", "studio", "parchment"];
 
       toggle.addEventListener("click", () => {
         links.classList.toggle("open");
@@ -1636,6 +1822,124 @@
       document.getElementById("lightboxClose").addEventListener("click", closeLb);
       lb.addEventListener("click", (e) => { if (e.target === lb) closeLb(); });
       window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLb(); });
+
+      /* —— Scroll film: renaissance / oriental painting as video —— */
+      const filmSection = document.getElementById("scrollfilm");
+      const filmCanvas = document.getElementById("filmCanvas");
+      const filmCtx = filmCanvas.getContext("2d", { alpha: false });
+      const filmCounter = document.getElementById("filmCounter");
+      const filmCaption = document.getElementById("filmCaption");
+      const filmRail = document.getElementById("filmRail");
+
+      const filmPaths = Array.from({ length: 12 }, (_, i) =>
+        `assets/film/frame-${String(i + 1).padStart(2, "0")}.jpg`
+      );
+
+      const filmCaptions = [
+        "Ink gathers on silk — the guild hall opens.",
+        "Gold leaf catches lantern light across the frame.",
+        "A lacquer stillness; mountains breathe in mist.",
+        "Temple wood and vermillion seal the hour.",
+        "Waves of seigaiha roll beneath the scroll.",
+        "The academy wall holds its silent audience.",
+        "Peony and dusk — colour returns to the canvas.",
+        "Brushstroke by brushstroke, the scene advances.",
+        "East meets atelier: renaissance depth, oriental ink.",
+        "The camera walks the painting like a pilgrim.",
+        "Shadow and gilt — a living museum reel.",
+        "The scroll rests. The guild awaits within."
+      ];
+
+      const filmImages = [];
+      let filmReady = 0;
+      let filmProgress = 0;
+      let filmDrawn = -1;
+
+      function coverDraw(img, progressWithin, alpha) {
+        const cw = filmCanvas.width;
+        const ch = filmCanvas.height;
+        const iw = img.naturalWidth || img.width;
+        const ih = img.naturalHeight || img.height;
+        if (!iw || !ih) return;
+
+        const zoom = 1.18 + progressWithin * 0.22;
+        const panX = (progressWithin - 0.5) * 0.14;
+        const panY = Math.sin(progressWithin * Math.PI) * 0.06;
+
+        const scale = Math.max(cw / iw, ch / ih) * zoom;
+        const dw = iw * scale;
+        const dh = ih * scale;
+        const dx = (cw - dw) / 2 + panX * cw;
+        const dy = (ch - dh) / 2 + panY * ch;
+
+        filmCtx.globalAlpha = alpha;
+        filmCtx.drawImage(img, dx, dy, dw, dh);
+        filmCtx.globalAlpha = 1;
+      }
+
+      function renderFilm(p) {
+        const n = filmImages.length;
+        if (!n || filmReady < n) return;
+
+        const max = n - 1;
+        const f = Math.min(Math.max(p, 0), 1) * max;
+        const i0 = Math.floor(f);
+        const i1 = Math.min(i0 + 1, max);
+        const local = f - i0;
+
+        filmCtx.fillStyle = "#050403";
+        filmCtx.fillRect(0, 0, filmCanvas.width, filmCanvas.height);
+
+        coverDraw(filmImages[i0], local, 1);
+        if (i1 !== i0) coverDraw(filmImages[i1], local, local);
+
+        filmCtx.fillStyle = "rgba(122, 31, 31, 0.08)";
+        filmCtx.fillRect(0, 0, filmCanvas.width, filmCanvas.height);
+
+        const frameNum = String(i0 + 1).padStart(2, "0");
+        filmCounter.textContent = `FRAME ${frameNum} / ${String(n).padStart(2, "0")}`;
+        filmCaption.textContent = filmCaptions[i0] || "";
+        filmRail.style.width = `${(p * 100).toFixed(2)}%`;
+        filmDrawn = f;
+      }
+
+      function filmScrollUpdate() {
+        const rect = filmSection.getBoundingClientRect();
+        const total = filmSection.offsetHeight - window.innerHeight;
+        const scrolled = Math.min(Math.max(-rect.top, 0), total);
+        filmProgress = total > 0 ? scrolled / total : 0;
+        if (Math.abs(filmProgress * 11 - filmDrawn) > 0.01 || filmDrawn < 0) {
+          renderFilm(filmProgress);
+        }
+      }
+
+      filmPaths.forEach((src, idx) => {
+        const img = new Image();
+        img.decoding = "async";
+        img.onload = () => {
+          filmReady += 1;
+          if (filmReady === filmPaths.length) {
+            renderFilm(0);
+            filmScrollUpdate();
+          }
+        };
+        img.onerror = () => {
+          filmReady += 1;
+        };
+        img.src = src;
+        filmImages[idx] = img;
+      });
+
+      let filmTicking = false;
+      window.addEventListener("scroll", () => {
+        if (filmTicking) return;
+        filmTicking = true;
+        requestAnimationFrame(() => {
+          filmScrollUpdate();
+          filmTicking = false;
+        });
+      }, { passive: true });
+      window.addEventListener("resize", () => renderFilm(filmProgress), { passive: true });
     })();
   </script>
 </body>
