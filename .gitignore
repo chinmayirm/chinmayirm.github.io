@@ -1,6 +1,14 @@
-*.mp4
-*.pdf
+node_modules
+dist
 .DS_Store
+*.local
+*.pdf
+!public/Chinmayi-RM-Resume.pdf
 Industry 2025.pdf
 WhatsApp*
-assets/ref-frames/
+Screen Recording*
+*.mov
+*.mp4
+!public/assets/film/*.mp4
+!public/assets/film/*.webm
+public/assets/ref-frames/

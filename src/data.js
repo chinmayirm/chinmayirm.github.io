@@ -3,6 +3,7 @@ export const SITE = {
   email: "chinmayirm.04@gmail.com",
   linkedin: "https://linkedin.com/in/chinmayi-r-m-a85455253/",
   github: "https://github.com/chinmayirm",
+  resume: "/Chinmayi-RM-Resume.pdf",
   tagline: "Code · Research · Art · Curiosity",
 };
 
@@ -163,7 +164,7 @@ export const PROJECTS = [
   {
     id: "proj-gliner",
     title: "GLiNER Autosuggest NER",
-    image: "assets/images/projects/gliner.jpg",
+    image: "/assets/images/projects/gliner.jpg",
     blurb: "Entity-aware autosuggest on real travel traffic — live at scale.",
     tags: ["GLiNER", "NER", "PyTorch", "Production"],
     overview:
@@ -177,7 +178,7 @@ export const PROJECTS = [
   {
     id: "proj-yoda",
     title: "Yoda Bot",
-    image: "assets/images/projects/yoda.jpg",
+    image: "/assets/images/projects/yoda.jpg",
     blurb: "Emotion-aware DialoGPT with sentiment-conditioned replies.",
     tags: ["NLP", "DialoGPT", "Dialogue"],
     overview: "A character dialogue bot that conditions replies on detected sentiment.",
@@ -189,7 +190,7 @@ export const PROJECTS = [
   {
     id: "proj-chroma",
     title: "Chroma Vision",
-    image: "assets/images/projects/chroma.jpg",
+    image: "/assets/images/projects/chroma.jpg",
     blurb: "CNN colour correction for protanopia accessibility.",
     tags: ["CV", "OpenCV", "Accessibility"],
     overview: "Vision pipeline that detects and corrects colours for protanopia.",
@@ -201,7 +202,7 @@ export const PROJECTS = [
   {
     id: "proj-qvit",
     title: "Quantum ViT Detection",
-    image: "assets/images/projects/qvit.jpg",
+    image: "/assets/images/projects/qvit.jpg",
     blurb: "Quantum attention inside Vision Transformers for detection.",
     tags: ["Qiskit", "ViT", "Research"],
     overview: "Exploring quantum circuits in ViT attention and FFN blocks for object detection.",
@@ -213,7 +214,7 @@ export const PROJECTS = [
   {
     id: "proj-isro",
     title: "Crop Distribution Model",
-    image: "assets/images/projects/isro.jpg",
+    image: "/assets/images/projects/isro.jpg",
     blurb: "13-band satellite pipeline for seasonal agricultural maps.",
     tags: ["ISRO", "Remote Sensing", "DL"],
     overview: "End-to-end remote sensing for crop monitoring at RRSC South.",
@@ -225,7 +226,7 @@ export const PROJECTS = [
   {
     id: "proj-rag",
     title: "Geopolitical Advisory",
-    image: "assets/images/projects/rag.jpg",
+    image: "/assets/images/projects/rag.jpg",
     blurb: "Context-aware RAG over UN resolutions and socioeconomic data.",
     tags: ["RAG", "LlamaIndex", "LLM"],
     overview: "RAG system grounding geopolitical questions in structured and document sources.",
@@ -289,7 +290,7 @@ export const BLOG = [
     title: "The Quiet Between",
     date: "2026-03-12",
     readTime: "6 min",
-    cover: "assets/images/blog/quiet-between.jpg",
+    cover: "/assets/images/blog/quiet-between.jpg",
     excerpt: "On pauses, unfinished queries, and why silence is part of the signal.",
     body: `<p>Vague queries are not noise — they are unfinished intent. Somewhere between keystroke and suggestion, there is a quiet where meaning is still forming.</p>
 <p>Working on autosuggest taught me to listen for that quiet. Models that rush to fill every gap often miss the point. The ones that wait — that leave room for the user to finish the thought — feel more human.</p>
@@ -301,7 +302,7 @@ export const BLOG = [
     title: "Things I Learned While Building",
     date: "2025-11-02",
     readTime: "5 min",
-    cover: "assets/images/blog/building.jpg",
+    cover: "/assets/images/blog/building.jpg",
     excerpt: "Production lessons from NER endpoints, dashboards, and nearly-working demos.",
     body: `<p>Shipping is a different sport from prototyping. Metrics that look clean in a notebook can wobble under real traffic. Edge cases are not edge cases — they are the product.</p>
 <p>I learned to prefer boring reliability over clever architecture, to write the eval before the flourish, and to treat every dashboard as a conversation with the next person who will inherit it.</p>
@@ -312,7 +313,7 @@ export const BLOG = [
     title: "Notes From a Curious Mind",
     date: "2025-07-18",
     readTime: "4 min",
-    cover: "assets/images/blog/curious.jpg",
+    cover: "/assets/images/blog/curious.jpg",
     excerpt: "Fragments on quantum circuits, satellite bands, and asking better questions.",
     body: `<p>Curiosity is not a mood — it is a practice. Some weeks it looks like Qiskit circuits. Some weeks it looks like thirteen spectral bands over farmland.</p>
 <p>The common thread is asking questions that do not fit neatly into a sprint ticket. What if attention were entangled? What if crop maps could speak in seasons?</p>
@@ -323,7 +324,7 @@ export const BLOG = [
     title: "Why I Still Make Things by Hand",
     date: "2025-02-09",
     readTime: "5 min",
-    cover: "assets/images/blog/by-hand.jpg",
+    cover: "/assets/images/blog/by-hand.jpg",
     excerpt: "Paint, paper, and the relief of work that does not need an F1 score.",
     body: `<p>Not everything needs to be optimised. A brushstroke cannot be A/B tested into sincerity.</p>
 <p>When I paint, I am not chasing a leaderboard. I am learning to see — edges, negative space, when to stop. Those muscles quietly help me design better systems too.</p>
@@ -338,7 +339,7 @@ export const PAINTINGS = [
     date: "2024",
     medium: "Ink on paper",
     caption: "Mist settling between ridges — a study in restraint.",
-    image: "assets/images/paintings/p1.jpg",
+    image: "/assets/images/paintings/p1.jpg",
   },
   {
     id: "art-2",
@@ -346,7 +347,7 @@ export const PAINTINGS = [
     date: "2024",
     medium: "Digital study",
     caption: "Gold catching on dark lacquer.",
-    image: "assets/images/paintings/p2.jpg",
+    image: "/assets/images/paintings/p2.jpg",
   },
   {
     id: "art-3",
@@ -354,7 +355,7 @@ export const PAINTINGS = [
     date: "2025",
     medium: "Mixed media",
     caption: "Wood, stone, and the pause before prayer.",
-    image: "assets/images/paintings/p3.jpg",
+    image: "/assets/images/paintings/p3.jpg",
   },
   {
     id: "art-4",
@@ -362,7 +363,7 @@ export const PAINTINGS = [
     date: "2025",
     medium: "Watercolour",
     caption: "Soft folds, soft light.",
-    image: "assets/images/paintings/p4.jpg",
+    image: "/assets/images/paintings/p4.jpg",
   },
   {
     id: "art-5",
@@ -370,7 +371,7 @@ export const PAINTINGS = [
     date: "2025",
     medium: "Acrylic",
     caption: "One bloom, full attention.",
-    image: "assets/images/paintings/p5.jpg",
+    image: "/assets/images/paintings/p5.jpg",
   },
   {
     id: "art-6",
@@ -378,7 +379,7 @@ export const PAINTINGS = [
     date: "2026",
     medium: "Ink wash",
     caption: "Where the path disappears on purpose.",
-    image: "assets/images/paintings/p6.jpg",
+    image: "/assets/images/paintings/p6.jpg",
   },
   {
     id: "art-7",
@@ -386,7 +387,7 @@ export const PAINTINGS = [
     date: "2026",
     medium: "Oil study",
     caption: "Pink light on black water.",
-    image: "assets/images/paintings/p7.jpg",
+    image: "/assets/images/paintings/p7.jpg",
   },
   {
     id: "art-8",
@@ -394,7 +395,7 @@ export const PAINTINGS = [
     date: "2026",
     medium: "Digital",
     caption: "A quiet corner kept for looking.",
-    image: "assets/images/paintings/p8.jpg",
+    image: "/assets/images/paintings/p8.jpg",
   },
 ];
 

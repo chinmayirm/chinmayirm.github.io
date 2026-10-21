@@ -1,35 +1,41 @@
 # Chinmayi RM — Portfolio
 
-Dark futuristic portfolio meets Japanese night garden. Static site for GitHub Pages.
+Dark futuristic portfolio meets Japanese night garden. Built with **React + Vite** for GitHub Pages.
 
 ## Structure
 
 ```
-index.html
-css/main.css
-js/data.js      ← edit content here
-js/app.js
-assets/images/
-  hero/ profile/ projects/ research/ paintings/ blog/ decorative/
+src/
+  App.jsx
+  data.js          ← edit content here
+  components/      ← Portal, Story, sections, overlays
+  styles/main.css
+public/assets/     ← images + Seedance film (story.mp4)
 ```
-
-## Sections
-
-Home · About · Education · Experience · Projects · Research · Creative (Blog / Art Gallery / Other) · Contact
 
 ## Local preview
 
-Because the app uses ES modules, serve over HTTP (not `file://`):
-
 ```bash
-python3 -m http.server 8080
-# open http://localhost:8080
+npm install
+npm run dev
+# open http://127.0.0.1:5173/   (or the port Vite prints)
 ```
 
-## Deploy
+Do **not** use `python3 -m http.server` — this is a React/Vite app and needs `npm run dev`.
 
-Push to `chinmayirm.github.io` on `main`, then enable Pages from that branch.
+## Build / deploy
 
-## Edit content
+```bash
+npm run build
+```
 
-Update `js/data.js` for education, experience, projects, research, blog posts, and paintings.
+Push `dist/` (or the repo with a Pages workflow) to `chinmayirm.github.io`.  
+For a simple static host: deploy the contents of `dist/` to the site root.
+
+## Seedance story
+
+Drop `public/assets/film/story.mp4` — see `public/SEEDANCE.md` for prompts.
+
+## Portal
+
+First visit shows the interactive light-lines portal. Bypass with `?skip=1`.
